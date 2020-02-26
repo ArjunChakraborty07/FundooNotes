@@ -1,0 +1,23 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.dto.UserDetails;
+@Service
+public class RegistrationServiceImpl {
+
+	private List<UserDetails> obj= Arrays.asList(new UserDetails());
+	
+	public List<UserDetails> getDetails()
+	{
+		return obj;
+	}
+
+	public void addUser(UserDetails object) {
+		obj.add(object); 
+		
+	}
+}
