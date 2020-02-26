@@ -1,0 +1,12 @@
+package com.bridgelabz.fundoo.configuration;
+
+//@Configuration
+public class EntityConfiguration {
+//	@Bean
+//	public UserEntity userentity()
+//	{
+//		UserEntity userentity = new UserEntity();
+//		return userentity;
+//	}
+
+}

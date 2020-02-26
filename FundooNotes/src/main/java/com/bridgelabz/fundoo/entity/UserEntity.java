@@ -5,48 +5,66 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class UserEntity {		
-	public String email;
-	public String password;
-	public int phone;
-	public String name;
-	
+@Table(name = "fundoo_table")
+public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	
-	@Column
+
+	public UserEntity(int id, String name, String email, String phone, String password) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.password = password;
+	}
+
+	@Column(name = "user_name")
+	public String name;
+	@Column(name = "email_id")
+	public String email;
+	@Column(name = "phone_no")
+	public String phone;
+	@Column(name = "password")
+	public String password;
+
+	public UserEntity() {
+
+	}
+
 	public String getName() {
 		return name;
 	}
-	@Column
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Column
+
 	public String getEmail() {
 		return email;
 	}
-	@Column
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@Column
+
 	public String getPassword() {
 		return password;
 	}
-	@Column
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Column
-	public int getPhone() {
+
+	public String getPhone() {
 		return phone;
 	}
-	@Column
-	public void setPhone(int phone) {
+
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 }
