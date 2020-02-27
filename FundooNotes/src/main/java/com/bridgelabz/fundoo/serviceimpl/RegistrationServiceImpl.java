@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -79,21 +81,29 @@ public class RegistrationServiceImpl {
 		
 	}
 
-	public void createVerificationToken(UserDetails user, String token) {
-        VerificationToken myToken = new VerificationToken(token, user);
-        tokenRepository.save(myToken);
-    }
+	
 	public boolean forgotpwd(UserDetails object) {
 		
 		if(userRepository.forgetpwd(object))
 		{		
 			SimpleMailMessage msg = new SimpleMailMessage();
 	        msg.setTo(object.getEmail());
-	        msg.setSubject("Fundoo Registration Verification");
-	        msg.setText("Link for forgot password");
+	        msg.setSubject("Fundoo Forgot Password");
+	        msg.setText("Link for resetting password " + "\r\nhttp://localhost:8080/login/resetpassword");
 	        javaMailSender.send(msg);
 	        return true;
 		}
 		return false;
 	}
+
+	public boolean resetpassword(UserDetails object) {
+	
+		UserEntity data = new UserEntity();
+		BeanUtils.copyProperties(object, data);
+		data.setPassword(encryption.encode(data.getPassword()));	
+		userRepository.updatepassword(data);
+		return true;
+	}
+		
+	
 }

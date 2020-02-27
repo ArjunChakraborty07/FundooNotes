@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.userdetails.User;
 
+import com.bridgelabz.fundoo.entity.UserEntity;
+
 public class TokenVerification {
 	private static final int EXPIRATION = 60 * 24;
 	 
@@ -22,7 +24,7 @@ public class TokenVerification {
      
     private String token;
    
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
      
