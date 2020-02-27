@@ -3,6 +3,7 @@ package com.bridgelabz.fundoo.serviceimpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,16 +79,21 @@ public class RegistrationServiceImpl {
 		
 	}
 
-	public void forgotpwd(UserDetails object) {
+	public void createVerificationToken(UserDetails user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
+    }
+	public boolean forgotpwd(UserDetails object) {
 		
-		SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(object.getEmail());
-
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Link for forgot password");
-
-        javaMailSender.send(msg);
-
-		
+		if(userRepository.forgetpwd(object))
+		{		
+			SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo(object.getEmail());
+	        msg.setSubject("Fundoo Registration Verification");
+	        msg.setText("Link for forgot password");
+	        javaMailSender.send(msg);
+	        return true;
+		}
+		return false;
 	}
 }

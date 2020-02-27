@@ -10989,3 +10989,109 @@ Binding(CTRL+SHIFT+T,
 
 !ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 12:41:02.812
 !MESSAGE executing callback sts4.classpath.zCHHzPkp SUCCESS [done]
+!SESSION 2020-02-27 14:33:48.932 -----------------------------------------------
+eclipse.buildId=4.5.1.202001211336-RELEASE
+java.version=1.8.0_242
+java.vendor=Private Build
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Framework arguments:  -product org.springframework.boot.ide.branding.sts4
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.springframework.boot.ide.branding.sts4
+
+!ENTRY org.eclipse.core.resources 2 10035 2020-02-27 14:33:57.219
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jface 2 0 2020-02-27 14:34:01.891
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2020-02-27 14:34:01.891
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@1f547af8,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@4caf875c,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:09.133
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:09.135
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@25c6f0fc[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=624)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:09.138
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:09.231
+!MESSAGE Instantiating ReusableClasspathListenerHandler
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:19.666
+!MESSAGE Boot LS startup time from start to initialized: 10481ms
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:19.889
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.KdDZjENvisBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.206
+!MESSAGE subscribing to classpath changes: sts4.classpath.KdDZjENv isBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.214
+!MESSAGE Setting up ClasspathListenerManager
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.228
+!MESSAGE subsribers = {sts4.classpath.KdDZjENv=Send Classpath Notifications(101)}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.228
+!MESSAGE Sending initial event for all projects ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.229
+!MESSAGE project FundooNotes ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.255
+!MESSAGE project controller ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.256
+!MESSAGE Sending initial event for all projects DONE
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.256
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.KdDZjENv => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.257
+!MESSAGE Preparing classpath changed notification FundooNotes
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.267
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.332
+!MESSAGE classpath=135 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.347
+!MESSAGE buffering callback sts4.classpath.KdDZjENv FundooNotes false 135
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.348
+!MESSAGE Preparing classpath changed notification controller
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.348
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.369
+!MESSAGE classpath=112 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.378
+!MESSAGE buffering callback sts4.classpath.KdDZjENv controller false 112
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:26.379
+!MESSAGE executing callback sts4.classpath.KdDZjENv 2 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-27 14:34:27.808
+!MESSAGE executing callback sts4.classpath.KdDZjENv SUCCESS [done]
+
+!ENTRY org.eclipse.ui 2 2 2020-02-27 14:35:20.397
+!MESSAGE Invalid property category path: org.springframework.ide.eclipse.beans.ui.properties.ProjectPropertyPage (bundle: org.springframework.ide.eclipse.xml.namespaces, propertyPage: org.springframework.ide.eclipse.beans.ui.namespaces.projectPropertyPage)

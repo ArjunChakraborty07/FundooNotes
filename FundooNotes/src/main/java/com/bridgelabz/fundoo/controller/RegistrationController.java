@@ -27,30 +27,31 @@ public class RegistrationController {
 		return obj.getDetails();
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/Registration")
+	@PostMapping("/Registration")
 	public ResponseEntity<Responce> register(@RequestBody UserDetails object) {
-		System.out.println(object.getName());
 		String result = obj.addUser(object);
 		if (result != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(new Responce(200, "Sucessfull!!!"));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));
-
 	}
-	@RequestMapping(method = RequestMethod.POST, value = "/Registration/login")
+	@PostMapping("/Registration/login")
 	public ResponseEntity<Responce> login (@RequestBody UserDetails object)
 	{
-		boolean check=obj.userLogin(object);
-		if (check)
+		if (obj.userLogin(object))
 		{
 			return ResponseEntity.status(HttpStatus.OK).body(new Responce(200, "Sucessfull!!!"));
 		}
 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));			
 	}
 	@PostMapping("/Registration/login/forgotpassword")
-	public void forgotPassword(@RequestBody UserDetails object)
+	public ResponseEntity<Responce> forgotPassword(@RequestBody UserDetails object)
 	{
-		obj.forgotpwd(object);
+		if(obj.forgotpwd(object))
+		{
+			return ResponseEntity.status(HttpStatus.OK).body(new Responce(200, "Sucessfull!!!"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));
 	}
 		
 	@RequestMapping("/Registration/{name}")

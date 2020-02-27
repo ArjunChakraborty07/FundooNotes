@@ -36,4 +36,19 @@ public class UserRepository {
 		return (UserEntity)q.uniqueResult();
 		
 	}
+	@Transactional
+	public boolean forgetpwd(UserDetails object)
+	{
+		try
+		{
+			Session session = entityManager.unwrap(Session.class);		
+			Query q=session.createQuery("From UserEntity where email_id=:email");
+			q.setParameter("email", object.getEmail());
+			return true;
+		}	
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
 }
