@@ -24,7 +24,6 @@
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.dto.UserDetails"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
-<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.serviceimpl.RegistrationServiceImpl"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
@@ -35,4 +34,16 @@
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
 <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
 <fullyQualifiedTypeName name="javax.security.auth.message.callback.PrivateKeyCallback.Request"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Repository"/>
+<fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.entity.UserEntity"/>
+<fullyQualifiedTypeName name="javax.transaction.Transactional"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.repository.UserRepository"/>
+<fullyQualifiedTypeName name="javax.persistence.EntityManagerFactory"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+<fullyQualifiedTypeName name="org.hibernate.Session"/>
+<fullyQualifiedTypeName name="org.hibernate.SessionFactory"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Qualifier"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,44 @@
+package com.bridgelabz.fundoo.repository;
+
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.Entity;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.bridgelabz.fundoo.dto.UserDetails;
+import com.bridgelabz.fundoo.entity.UserEntity;
+
+@Repository
+public class UserRepository {
+	@Autowired
+	private EntityManager entityManager;
+
+	@Transactional
+	public void save(UserEntity user) {
+
+		Session session = entityManager.unwrap(Session.class);
+		session.saveOrUpdate(user);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Transactional
+	public void loginProcess(UserDetails object)
+	{
+		UserEntity user=new UserEntity();
+		Session session = entityManager.unwrap(Session.class);
+		
+		List data = session.createQuery("FROM fundoo_table",UserEntity.class).list(); 
+		
+		for (Iterator iterator = data.iterator(); iterator.hasNext();){
+             user =  (UserEntity) iterator.next(); 
+             System.out.println(user.getEmail());
+		}
+	}
+}

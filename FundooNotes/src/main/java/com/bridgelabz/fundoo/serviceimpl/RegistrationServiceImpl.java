@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +18,14 @@ import com.bridgelabz.fundoo.repository.UserRepository;
 @Service
 public class RegistrationServiceImpl {
 
-//	@Autowired
-//	private EntityManager entityManager;
-
-//	@Autowired
-//	private ModelMapper mapper;
-
 	@Autowired
 	private BCryptPasswordEncoder encryption;
 
-//	@Autowired
-
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 
 	private List<UserDetails> obj = new ArrayList<>(Arrays.asList(new UserDetails()));
 
@@ -45,36 +42,15 @@ public class RegistrationServiceImpl {
 		UserEntity data = new UserEntity();
 		obj.add(object);
 		BeanUtils.copyProperties(object, data);
-		System.out.println(data.getName());
 		data.setPassword(encryption.encode(data.getPassword()));
 		userRepository.save(data);
-////		Configuration con=new Configuration().configure().addAnnotatedClass(UserEntity.class);
-//		SessionFactory sf = new Configuration().configure().buildSessionFactory();
-//
-////		SessionFactory sf=con.buildSessionFactory();
-//		Session session = entityManager.unwrap(Session.class);
-//		session.saveOrUpdate(data);
-////		Session session=sf.openSession();
-//		Transaction tx=session.beginTransaction();
-//		session.save(data);
-//		tx.commit();//		
-//		
-//
-		return "hi";
+
+		return "data processing successful";
 
 	}
 
 	public UserDetails getData(String name) {
-//		for(int i=0; i<obj.size();i++)
-//		{
-//			UserDetails ob1=obj.get(i);
-//			System.out.println(ob1.getName());
-//			if(ob1.getName().equals(name))
-//			{
-//				return ob1;
-//			}
-//		}
-//		return null;
+
 		return obj.stream().filter(t -> t.getName().equals(name)).findFirst().get();
 
 	}
@@ -91,16 +67,27 @@ public class RegistrationServiceImpl {
 	}
 
 	public void deleteUser(String name) {
-//		for(int i=1; i<obj.size();i++)
-//		{
-//			UserDetails ob1=obj.get(i);
-//			
-//			if(ob1.getName().equals(name))
-//			{
-//				obj.remove(i);
-//				return;
-//			}
-//		}				
+		
 		obj.removeIf(t -> t.getName().equals(name));
+	}
+
+	public boolean userLogin(UserDetails object) {
+		
+		UserEntity data=userRepository.loginProcess(object);
+		return (encryption.matches(object.getPassword(),data.getPassword()));
+		
+	}
+
+	public void forgotpwd(UserDetails object) {
+		
+		SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(object.getEmail());
+
+        msg.setSubject("Testing from Spring Boot");
+        msg.setText("Link for forgot password");
+
+        javaMailSender.send(msg);
+
+		
 	}
 }

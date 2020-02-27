@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +37,22 @@ public class RegistrationController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));
 
 	}
-
+	@RequestMapping(method = RequestMethod.POST, value = "/Registration/login")
+	public ResponseEntity<Responce> login (@RequestBody UserDetails object)
+	{
+		boolean check=obj.userLogin(object);
+		if (check)
+		{
+			return ResponseEntity.status(HttpStatus.OK).body(new Responce(200, "Sucessfull!!!"));
+		}
+	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));			
+	}
+	@PostMapping("/Registration/login/forgotpassword")
+	public void forgotPassword(@RequestBody UserDetails object)
+	{
+		obj.forgotpwd(object);
+	}
+		
 	@RequestMapping("/Registration/{name}")
 	public UserDetails showDelails(@PathVariable String name) {
 		return obj.getData(name);
@@ -51,6 +67,7 @@ public class RegistrationController {
 	public void deletaDetails(@PathVariable String name) {
 		obj.deleteUser(name);
 	}
+	
 
 	@GetMapping(value = "/test")
 	public String name() {

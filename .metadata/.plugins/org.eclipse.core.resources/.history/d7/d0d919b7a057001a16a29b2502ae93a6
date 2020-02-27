@@ -1,8 +1,0 @@
-package com.bridgelabz.fundoo.serviceimpl;
-
-import java.util.Arrays;
-
-public class RegistrationServiceImpl {
-
-	private List<UserDetails> obj= Arrays.asList(new UserDetails());
-}
