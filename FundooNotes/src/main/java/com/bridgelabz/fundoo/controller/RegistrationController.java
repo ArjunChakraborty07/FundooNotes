@@ -22,7 +22,8 @@ import com.bridgelabz.fundoo.serviceimpl.RegistrationServiceImpl;
 public class RegistrationController {
 	@Autowired
 	private RegistrationServiceImpl obj;
-
+	
+	
 	@GetMapping("/Registration")
 	public List<UserDetails> display() {
 		return obj.getDetails();
@@ -65,24 +66,17 @@ public class RegistrationController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));
 	}
 		
-	@GetMapping("/Registration/{name}")
-	public UserDetails showDelails(@PathVariable String name) {
-		return obj.getData(name);
-	}
-
-	@PutMapping("/Registration/{name}")
-	public void updateDetails(@RequestBody UserDetails object, @PathVariable String name) {
-		obj.updateUser(object, name);
-	}
-
-	@DeleteMapping("/Registration/{name}")
-	public void deletaDetails(@PathVariable String name) {
-		obj.deleteUser(name);
+	@PostMapping("/Registration/login/verification/{token}")
+	public ResponseEntity<Responce> userVerification(@PathVariable("token") String token)
+	{
+		if(obj.getverify(token))
+		{
+			return ResponseEntity.status(HttpStatus.OK).body(new Responce(200, "Sucessfull!!!"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Responce(400, "Not Sucessfull!!!"));
 	}
 	
-
-	@GetMapping(value = "/test")
-	public String name() {
-		return "hi";
-	}
+	
+	
+	
 }

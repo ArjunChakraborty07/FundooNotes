@@ -11,16 +11,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.JWTCreator;
+import com.auth0.jwt.impl.JWTParser;
 import com.bridgelabz.fundoo.dto.UserDetails;
 import com.bridgelabz.fundoo.entity.UserEntity;
 import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.utility.JWTOperations;
 
 @Service
 public class RegistrationServiceImpl {
 
+	@Autowired
+	private JWTOperations jwt;
+	
 	@Autowired
 	private BCryptPasswordEncoder encryption;
 
@@ -43,7 +50,7 @@ public class RegistrationServiceImpl {
 	public String addUser(UserDetails object) {
 
 		UserEntity data = new UserEntity();
-		obj.add(object);
+		
 		BeanUtils.copyProperties(object, data);
 		data.setPassword(encryption.encode(data.getPassword()));
 		userRepository.save(data);
@@ -74,11 +81,14 @@ public class RegistrationServiceImpl {
 		obj.removeIf(t -> t.getName().equals(name));
 	}
 
-	public boolean userLogin(UserDetails object) {
+	public boolean userLogin(UserDetails object) {				
 		
-		UserEntity data=userRepository.loginProcess(object);
-		return (encryption.matches(object.getPassword(),data.getPassword()));
-		
+			UserEntity data=userRepository.loginProcess(object);
+			if(sendverify(data))
+			{
+				return (encryption.matches(object.getPassword(),data.getPassword()));
+			}
+			return false;
 	}
 
 	
@@ -102,6 +112,27 @@ public class RegistrationServiceImpl {
 		BeanUtils.copyProperties(object, data);
 		data.setPassword(encryption.encode(data.getPassword()));	
 		userRepository.updatepassword(data);
+		return true;
+	}
+
+	public boolean sendverify(UserEntity data) {
+				
+		SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(data.getEmail());
+        msg.setSubject("Fundoo Verification");
+        msg.setText("http://localhost:8080/registration/login/verification/"+ jwt.JwtToken(data.getEmail()));
+        boolean check=getverify(jwt.JwtToken(data.getEmail()));
+        return check;
+		
+	}
+	
+	public boolean getverify(String token)
+	{
+		String email=jwt.parseJWT(token);
+		UserEntity data = new UserEntity();
+		data.setEmail(email);
+		data.setverify("true");
+		userRepository.verification(data);
 		return true;
 	}
 		

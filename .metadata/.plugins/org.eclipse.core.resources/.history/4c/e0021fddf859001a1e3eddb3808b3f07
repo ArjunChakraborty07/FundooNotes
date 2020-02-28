@@ -1,0 +1,21 @@
+package com.bridgelabz.fundoo.utility;
+
+
+import java.sql.Timestamp;
+import java.util.*;
+
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.security.core.userdetails.User;
+
+import com.bridgelabz.fundoo.entity.UserEntity;
+
+public class TokenVerification {
+	
+     	
+}

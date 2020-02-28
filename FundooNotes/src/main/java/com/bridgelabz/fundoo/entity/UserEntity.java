@@ -14,6 +14,22 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getVerify() {
+		return verify;
+	}
+
+	public void setVerify(String verify) {
+		this.verify = verify;
+	}
+
 	public UserEntity(int id, String name, String email, String phone, String password) {
 		super();
 		this.id = id;
@@ -21,6 +37,7 @@ public class UserEntity {
 		this.email = email;
 		this.phone = phone;
 		this.password = password;
+		this.verify= "false";
 	}
 
 	@Column(name = "user_name")
@@ -31,6 +48,8 @@ public class UserEntity {
 	public String phone;
 	@Column(name = "password")
 	public String password;
+	@Column(name = "verification")
+	public String verify;
 
 	public UserEntity() {
 
@@ -66,5 +85,13 @@ public class UserEntity {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getverify() {
+		return verify;
+	}
+	
+	public void setverify(String verify) {
+		this.verify=verify;
 	}
 }

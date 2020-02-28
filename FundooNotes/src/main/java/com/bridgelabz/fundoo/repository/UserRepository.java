@@ -18,6 +18,8 @@ import com.bridgelabz.fundoo.entity.UserEntity;
 public class UserRepository {
 	@Autowired
 	private EntityManager entityManager;
+	
+	
 
 	@Transactional
 	public void save(UserEntity data) {
@@ -62,4 +64,17 @@ public class UserRepository {
 		q.setParameter("email", data.getEmail());
 		q.executeUpdate();
 	}
+	@Transactional
+	@Modifying
+	public void verification(UserEntity data) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		
+		Query q=session.createQuery("UPDATE UserEntity set verify =:verify where email =:email");
+		q.setParameter("verify", data.getverify());
+		q.setParameter("email", data.getEmail());
+		q.executeUpdate();
+	}
+	
+	
 }
