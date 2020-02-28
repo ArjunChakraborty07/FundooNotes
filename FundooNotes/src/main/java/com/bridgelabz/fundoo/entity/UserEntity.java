@@ -22,22 +22,22 @@ public class UserEntity {
 		this.id = id;
 	}
 
-	public String getVerify() {
+	public boolean getVerify() {
 		return verify;
 	}
 
-	public void setVerify(String verify) {
+	public void setVerify(boolean verify) {
 		this.verify = verify;
 	}
 
-	public UserEntity(int id, String name, String email, String phone, String password) {
+	public UserEntity(int id, String name, String email, String phone, String password, boolean verify) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 		this.password = password;
-		this.verify= "false";
+		this.verify= verify;
 	}
 
 	@Column(name = "user_name")
@@ -49,7 +49,7 @@ public class UserEntity {
 	@Column(name = "password")
 	public String password;
 	@Column(name = "verification")
-	public String verify;
+	public boolean verify;
 
 	public UserEntity() {
 
@@ -86,12 +86,8 @@ public class UserEntity {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-
-	public String getverify() {
-		return verify;
-	}
 	
-	public void setverify(String verify) {
-		this.verify=verify;
+	public void setVerify(String verify) {
+		this.verify=false;
 	}
 }

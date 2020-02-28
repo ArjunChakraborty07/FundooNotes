@@ -19,13 +19,13 @@ public class UserRepository {
 	@Autowired
 	private EntityManager entityManager;
 	
-	
+	String email="email";
 
 	@Transactional
-	public void save(UserEntity data) {
+	public void save(UserEntity userEntity) {
 
 		Session session = entityManager.unwrap(Session.class);
-		session.saveOrUpdate(data);
+		session.saveOrUpdate(userEntity);
 	}
 	
 	@Transactional
@@ -33,8 +33,8 @@ public class UserRepository {
 	{
 
 		Session session = entityManager.unwrap(Session.class);		
-		Query q=session.createQuery("From UserEntity where email_id=:email");
-		q.setParameter("email", object.getEmail());
+		Query q=session.createQuery("From UserEntity where email_id=:"+email);
+		q.setParameter(email, object.getEmail());
 		return (UserEntity)q.uniqueResult();
 		
 	}
@@ -44,8 +44,8 @@ public class UserRepository {
 		try
 		{
 			Session session = entityManager.unwrap(Session.class);		
-			Query q=session.createQuery("From UserEntity where email_id=:email");
-			q.setParameter("email", object.getEmail());
+			Query q=session.createQuery("From UserEntity where email_id=:"+email);
+			q.setParameter(email, object.getEmail());
 			return true;
 		}	
 		catch(Exception e)
@@ -55,24 +55,24 @@ public class UserRepository {
 	}
 	@Transactional
 	@Modifying
-	public void updatepassword(UserEntity data) {
+	public void updatepassword(UserEntity userEntity) {
 		
 		Session session = entityManager.unwrap(Session.class);
 		
-		Query q=session.createQuery("UPDATE UserEntity set password =:password where email =:email");
-		q.setParameter("password", data.getPassword());
-		q.setParameter("email", data.getEmail());
+		Query q=session.createQuery("UPDATE UserEntity set password =:password where email =:"+email);
+		q.setParameter("password", userEntity.getPassword());
+		q.setParameter(email, userEntity.getEmail());
 		q.executeUpdate();
 	}
 	@Transactional
 	@Modifying
-	public void verification(UserEntity data) {
+	public void verification(UserEntity userEntity) {
 		
 		Session session = entityManager.unwrap(Session.class);
-		
+		userEntity.setVerify(true);
 		Query q=session.createQuery("UPDATE UserEntity set verify =:verify where email =:email");
-		q.setParameter("verify", data.getverify());
-		q.setParameter("email", data.getEmail());
+		q.setParameter("verify", userEntity.getVerify());
+		q.setParameter("email", userEntity.getEmail());
 		q.executeUpdate();
 	}
 	

@@ -1,0 +1,13 @@
+
+_
+java:S1068".Remove this unused "EXPIRATION" private field.(Ý•Ñ®úÿÿÿÿH¿RMAJORZ
+CODE_SMELL
+Z
+java:S1068")Remove this unused "token" private field.(°É©ñÿÿÿÿÿHÀRMAJORZ
+CODE_SMELL
+Z
+java:S1068".Remove this unused "expiryDate" private field.(Ô¨ß‹HÁRMAJORZ
+CODE_SMELL
+d
+java:S1144!"8Remove this unused private "calculateExpiryDate" method.(íªã›HÂRMAJORZ
+CODE_SMELL

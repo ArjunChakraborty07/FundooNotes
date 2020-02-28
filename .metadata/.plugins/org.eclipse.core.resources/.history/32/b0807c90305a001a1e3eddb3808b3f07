@@ -1,0 +1,73 @@
+package com.bridgelabz.fundoo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.http.ResponseEntity.HeadersBuilder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bridgelabz.fundoo.dto.UserDetails;
+import com.bridgelabz.fundoo.serviceimpl.RegistrationServiceImpl;
+
+@RestController
+public class RegistrationController {
+	@Autowired
+	private RegistrationServiceImpl userService;
+	
+
+	@PostMapping("/users/register")
+	public HeadersBuilder<BodyBuilder> register(@RequestBody UserDetails userServiceect) {
+		String result = userService.addUser(userServiceect);
+		if (result != null) {
+			return ResponseEntity.status(HttpStatus.OK);
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+	}
+	
+	@PostMapping("/user/login")
+	public HeadersBuilder<BodyBuilder> login (@RequestBody UserDetails userServiceect)
+	{
+		if (userService.userLogin(userServiceect))
+		{
+			return ResponseEntity.status(HttpStatus.OK);
+		}
+	return ResponseEntity.status(HttpStatus.BAD_REQUEST);//.body(new Responce(400, "Not Sucessfull!!!"));			
+	}
+	@PostMapping("/users/forgotPassword")
+	public HeadersBuilder<BodyBuilder> forgotPassword(@RequestBody UserDetails userServiceect)
+	{
+		if(userService.forgotpwd(userServiceect))
+		{
+			return ResponseEntity.status(HttpStatus.OK);//.body(new Responce(200, "Sucessfull!!!"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST);//.body(new Responce(400, "Not Sucessfull!!!"));
+	}
+	
+	@PostMapping("/users/resetPassword")
+	public HeadersBuilder<BodyBuilder> resetPassword(@RequestBody UserDetails userServiceect)
+	{
+		if(userService.resetpassword(userServiceect))
+		{
+			return ResponseEntity.status(HttpStatus.OK);//.body(new Responce(200, "Sucessfull!!!"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST);//.body(new Responce(400, "Not Sucessfull!!!"));
+	}
+		
+	@GetMapping("/users/userVerification/{token}")
+	public HeadersBuilder<BodyBuilder> userVerification(@PathVariable("token") String token)
+	{
+		if(userService.getverify(token))
+		{
+			return ResponseEntity.status(HttpStatus.OK);//.body(new Responce(200, "Sucessfull!!!"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST);//.body(new Responce(400, "Not Sucessfull!!!"));
+	}
+	
+	
+	
+}

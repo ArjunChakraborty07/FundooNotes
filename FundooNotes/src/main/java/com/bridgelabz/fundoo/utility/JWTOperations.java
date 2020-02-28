@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 public class JWTOperations {
 	private static final String SECRET = "7605845560";
 
-	public String JwtToken(String email) {
+	public String jwtToken(String email) {
 		String token = null;
 		try {
 			token = JWT.create().withClaim("email", email).sign(Algorithm.HMAC256(SECRET));
