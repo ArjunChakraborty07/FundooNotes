@@ -48,17 +48,13 @@ public class UserServiceImpl implements IUserService {
 
 	public boolean userLogin(UserDetails userDetails) {				
 		
-			UserEntity userEntity=userRepository.loginProcess(userDetails);	
-			if(userEntity.getVerify())
-			{
-				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
-			}
-				throw new UserServiceException("User Verification Pending...", 402);
+			UserEntity userEntity=userRepository.loginProcess(userDetails);			
+			return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
 	}
 	
 	public boolean forgotpwd(UserDetails userDetails) {
 		
-		if(userRepository.forgetpwd(userDetails)!=null)
+		if(userRepository.forgetpwd(userDetails))
 		{		
 			SimpleMailMessage msg = new SimpleMailMessage();
 	        msg.setTo(userDetails.getEmail());
@@ -67,7 +63,7 @@ public class UserServiceImpl implements IUserService {
 	        javaMailSender.send(msg);
 	        return true;
 		}
-		throw new UserServiceException("User Not Found....", 403);
+		return false;
 	}
 
 	public boolean resetPassword(UserDetails userDetails) {
@@ -88,14 +84,14 @@ public class UserServiceImpl implements IUserService {
         javaMailSender.send(msg);
 	}
 	
-	public boolean getVerify(String token){
+	public boolean getVerify(String token) {
 	
 		String email=jwt.parseJWT(token);
 		UserEntity userEntity = new UserEntity();
 		userEntity.setEmail(email);
 		userEntity.setVerify(true);
 		userRepository.verification(userEntity);	
-		return true;		
+		return true;
 	}
 
 	        	

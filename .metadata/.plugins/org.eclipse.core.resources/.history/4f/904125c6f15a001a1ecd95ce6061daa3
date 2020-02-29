@@ -50,9 +50,8 @@ public class UserServiceImpl implements IUserService {
 		
 			UserEntity userEntity=userRepository.loginProcess(userDetails);	
 			if(userEntity.getVerify())
-			{
-				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
-			}
+			return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
+			else
 				throw new UserServiceException("User Verification Pending...", 402);
 	}
 	

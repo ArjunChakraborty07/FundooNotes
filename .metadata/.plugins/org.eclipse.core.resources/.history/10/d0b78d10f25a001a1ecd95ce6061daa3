@@ -53,6 +53,7 @@ public class UserServiceImpl implements IUserService {
 			{
 				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
 			}
+			else
 				throw new UserServiceException("User Verification Pending...", 402);
 	}
 	

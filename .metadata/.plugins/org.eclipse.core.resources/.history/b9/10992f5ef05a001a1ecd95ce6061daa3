@@ -47,12 +47,19 @@ public class UserRepository {
 		
 	}
 	@Transactional
-	public UserDetails forgetpwd(UserDetails userDetails)
-	{		
+	public boolean forgetpwd(UserDetails userDetails)
+	{
+		try
+		{
 			Session session = entityManager.unwrap(Session.class);		
 			Query q=session.createQuery(query+email);
 			q.setParameter(email, userDetails.getEmail());
-			return (UserDetails)q.uniqueResult();
+			return true;
+		}	
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 	@Transactional
 	@Modifying
