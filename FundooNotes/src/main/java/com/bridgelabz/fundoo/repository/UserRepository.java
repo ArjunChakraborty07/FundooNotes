@@ -20,32 +20,40 @@ public class UserRepository {
 	private EntityManager entityManager;
 	
 	String email="email";
-
+	String query="From UserEntity where email_id=:";
 	@Transactional
-	public void save(UserEntity userEntity) {
+	public boolean save(UserEntity userEntity) {
 
 		Session session = entityManager.unwrap(Session.class);
-		session.saveOrUpdate(userEntity);
+		Query q=session.createQuery(query+email);
+		q.setParameter(email, userEntity.getEmail());
+		if((UserEntity)q.uniqueResult()==null)
+		{				
+			session.saveOrUpdate(userEntity);
+			return true;
+		}
+		return false;
+		
 	}
 	
 	@Transactional
-	public UserEntity loginProcess(UserDetails object)
+	public UserEntity loginProcess(UserDetails userDetails)
 	{
 
 		Session session = entityManager.unwrap(Session.class);		
-		Query q=session.createQuery("From UserEntity where email_id=:"+email);
-		q.setParameter(email, object.getEmail());
+		Query q=session.createQuery(query+email);
+		q.setParameter(email, userDetails.getEmail());
 		return (UserEntity)q.uniqueResult();
 		
 	}
 	@Transactional
-	public boolean forgetpwd(UserDetails object)
+	public boolean forgetpwd(UserDetails userDetails)
 	{
 		try
 		{
 			Session session = entityManager.unwrap(Session.class);		
-			Query q=session.createQuery("From UserEntity where email_id=:"+email);
-			q.setParameter(email, object.getEmail());
+			Query q=session.createQuery(query+email);
+			q.setParameter(email, userDetails.getEmail());
 			return true;
 		}	
 		catch(Exception e)

@@ -7,7 +7,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 @Component
 public class JWTOperations {
-	private static final String SECRET = "7605845560";
+	private static final String SECRET = System.getenv("secret");
 
 	public String jwtToken(String email) {
 		String token = null;

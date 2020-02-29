@@ -3,69 +3,67 @@ package com.bridgelabz.fundoo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
-import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoo.dto.UserDetails;
-import com.bridgelabz.fundoo.serviceimpl.RegistrationServiceImpl;
+import com.bridgelabz.fundoo.response.Response;
+import com.bridgelabz.fundoo.service.IUserService;
 
 @RestController
 public class UserController {
 	@Autowired
-	private RegistrationServiceImpl userService;
+	private IUserService userService;
 	
 
 	@PostMapping("/users/register")
-	public HeadersBuilder<BodyBuilder> register(@RequestBody UserDetails userDetails) {
+	public ResponseEntity<Response> register(@RequestBody UserDetails userDetails) {
 		String result = userService.addUser(userDetails);
-		if (result != null) {
-			return ResponseEntity.status(HttpStatus.OK);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+			return  ResponseEntity.status(HttpStatus.OK).body(new Response(200, result));		
 	}
 	
-	@PostMapping("/users/login")
-	public HeadersBuilder<BodyBuilder> login (@RequestBody UserDetails userDetails)
+	@GetMapping("/users/login")
+	public ResponseEntity<Response> login (@RequestBody UserDetails userDetails)
 	{
 		if (userService.userLogin(userDetails))
 		{
-			return ResponseEntity.status(HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Login Successfull"));
 		}
-	return ResponseEntity.status(HttpStatus.BAD_REQUEST);			
+	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Login Denied"));			
 	}
-	@PostMapping("/users/forgotPassword")
-	public HeadersBuilder<BodyBuilder> forgotPassword(@RequestBody UserDetails userDetails)
+	@PutMapping("/users/forgotPassword")
+	public ResponseEntity<Response> forgotPassword(@RequestBody UserDetails userDetails)
 	{
 		if(userService.forgotpwd(userDetails))
 		{
-			return ResponseEntity.status(HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Verification Mail send"));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Invalid Email Id"));
 	}
 	
-	@PostMapping("/users/resetPassword")
-	public HeadersBuilder<BodyBuilder> resetPassword(@RequestBody UserDetails userDetails)
+	@PutMapping("/users/resetPassword/{token}")
+	public ResponseEntity<Response> resetPassword(@PathVariable("token") String token, @RequestBody UserDetails userDetails)
 	{
-		if(userService.resetPassword(userDetails))
-		{
-			return ResponseEntity.status(HttpStatus.OK);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+		
+		 if(userService.resetPassword(userDetails))
+		 { 
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Password Reset Successful")); 
+		 }
+		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Update Denied"));
 	}
 		
 	@GetMapping("/users/userVerification/{token}")
-	public HeadersBuilder<BodyBuilder> userVerification(@PathVariable("token") String token)
+	public ResponseEntity<Response> userVerification(@PathVariable("token") String token)
 	{
 		if(userService.getVerify(token))
 		{
-			return ResponseEntity.status(HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "OK"));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "OK"));
 	}
 	
 	
