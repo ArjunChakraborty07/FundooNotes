@@ -7,9 +7,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.fundoo.dto.UserDetails;
+import com.bridgelabz.fundoo.dto.UserDTO;
 import com.bridgelabz.fundoo.entity.UserEntity;
-import com.bridgelabz.fundoo.exception.UserServiceException;
+import com.bridgelabz.fundoo.exception.UserServiceExceptionHandler;
 import com.bridgelabz.fundoo.repository.UserRepository;
 import com.bridgelabz.fundoo.service.IUserService;
 import com.bridgelabz.fundoo.utility.JWTOperations;
@@ -31,7 +31,7 @@ public class UserServiceImpl implements IUserService {
 
 	
 
-	public String addUser(UserDetails userDetails) {
+	public String addUser(UserDTO userDetails) {
 
 		UserEntity userEntity = new UserEntity();		
 		BeanUtils.copyProperties(userDetails, userEntity);
@@ -42,21 +42,21 @@ public class UserServiceImpl implements IUserService {
 			sendVerify(userEntity);
 			return "Data processing successful";
 		}
-		throw new UserServiceException("User Already Exist....", 401);
+		throw new UserServiceExceptionHandler("User Already Exist....", 401);
 	}
 
 
-	public boolean userLogin(UserDetails userDetails) {				
+	public boolean userLogin(UserDTO userDetails) {				
 		
 			UserEntity userEntity=userRepository.loginProcess(userDetails);	
 			if(userEntity.getVerify())
 			{
 				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
 			}
-				throw new UserServiceException("User Verification Pending...", 402);
+				throw new UserServiceExceptionHandler("User Verification Pending...", 402);
 	}
 	
-	public boolean forgotpwd(UserDetails userDetails) {
+	public boolean forgotpwd(UserDTO userDetails) {
 		
 		if(userRepository.forgetpwd(userDetails)!=null)
 		{		
@@ -67,10 +67,10 @@ public class UserServiceImpl implements IUserService {
 	        javaMailSender.send(msg);
 	        return true;
 		}
-		throw new UserServiceException("User Not Found....", 403);
+		throw new UserServiceExceptionHandler("User Not Found....", 403);
 	}
 
-	public boolean resetPassword(UserDetails userDetails) {
+	public boolean resetPassword(UserDTO userDetails) {
 	
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(userDetails, userEntity);

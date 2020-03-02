@@ -6,19 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Entity
 @Table(name = "fundoo_table")
 public class UserEntity {
-	
-	@Transient
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

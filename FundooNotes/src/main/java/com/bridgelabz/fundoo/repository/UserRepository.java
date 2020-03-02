@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
-import com.bridgelabz.fundoo.dto.UserDetails;
+import com.bridgelabz.fundoo.dto.UserDTO;
 import com.bridgelabz.fundoo.entity.UserEntity;
 @SuppressWarnings("rawtypes")
 @Repository
@@ -37,7 +37,7 @@ public class UserRepository {
 	}
 	
 	@Transactional
-	public UserEntity loginProcess(UserDetails userDetails)
+	public UserEntity loginProcess(UserDTO userDetails)
 	{
 
 		Session session = entityManager.unwrap(Session.class);		
@@ -47,12 +47,12 @@ public class UserRepository {
 		
 	}
 	@Transactional
-	public UserDetails forgetpwd(UserDetails userDetails)
+	public UserDTO forgetpwd(UserDTO userDetails)
 	{		
 			Session session = entityManager.unwrap(Session.class);		
 			Query q=session.createQuery(query+email);
 			q.setParameter(email, userDetails.getEmail());
-			return (UserDetails)q.uniqueResult();
+			return (UserDTO)q.uniqueResult();
 	}
 	@Transactional
 	@Modifying

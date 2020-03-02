@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.fundoo.dto.UserDetails;
+import com.bridgelabz.fundoo.dto.UserDTO;
 import com.bridgelabz.fundoo.response.Response;
 import com.bridgelabz.fundoo.service.IUserService;
 
@@ -21,13 +21,13 @@ public class UserController {
 	
 
 	@PostMapping("/users/register")
-	public ResponseEntity<Response> register(@RequestBody UserDetails userDetails) {
+	public ResponseEntity<Response> register(@RequestBody UserDTO userDetails) {
 		String result = userService.addUser(userDetails);
 			return  ResponseEntity.status(HttpStatus.OK).body(new Response(200, result));		
 	}
 	
 	@GetMapping("/users/login")
-	public ResponseEntity<Response> login (@RequestBody UserDetails userDetails)
+	public ResponseEntity<Response> login (@RequestBody UserDTO userDetails)
 	{
 		if (userService.userLogin(userDetails))
 		{
@@ -36,7 +36,7 @@ public class UserController {
 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Login Denied"));			
 	}
 	@PutMapping("/users/forgotPassword")
-	public ResponseEntity<Response> forgotPassword(@RequestBody UserDetails userDetails)
+	public ResponseEntity<Response> forgotPassword(@RequestBody UserDTO userDetails)
 	{
 		if(userService.forgotpwd(userDetails))
 		{
@@ -46,7 +46,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/users/resetPassword/{token}")
-	public ResponseEntity<Response> resetPassword(@PathVariable("token") String token, @RequestBody UserDetails userDetails)
+	public ResponseEntity<Response> resetPassword(@PathVariable("token") String token, @RequestBody UserDTO userDetails)
 	{
 		
 		 if(userService.resetPassword(userDetails))
@@ -63,7 +63,7 @@ public class UserController {
 		{
 			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "OK"));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "OK"));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Verification Unsucessful"));
 	}
 	
 	
