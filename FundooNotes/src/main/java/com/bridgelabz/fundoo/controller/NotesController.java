@@ -19,39 +19,39 @@ public class NotesController {
 	@Autowired
 	NoteServiceImpl noteService;
 	
-	@PostMapping("/create/{id}")
-	public void create(@RequestBody NotesDTO notesDTO,@PathVariable int id)
+	@PostMapping("/create/{token}")
+	public void create(@RequestBody NotesDTO notesDTO,@PathVariable("token") String token)
 	{
-		noteService.createNotes(notesDTO);
+		noteService.createNotes(notesDTO, token);
 	}
 	
-	@PutMapping("/edit/{id}")
-	public void edit(@RequestBody NotesDTO notesDTO, @PathVariable int id)
+	@PutMapping("/edit/{token}")
+	public void edit(@RequestBody NotesDTO notesDTO, @PathVariable("token") String token)
 	{
-		noteService.edit(notesDTO, id);
+		noteService.edit(notesDTO, token);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public void delete(@PathVariable int id)
+	@DeleteMapping("/delete/{token}")
+	public void delete(@PathVariable("token") String token)
 	{
-		noteService.delete(id);
+		noteService.delete(token);
 	}
 	
-	@PutMapping("/archieve/{id}")
-	public void archieve(@PathVariable int id)
+	@PutMapping("/archieve/{token}")
+	public void archieve(@PathVariable("token") String token)
 	{
-		noteService.archieve(id);
+		noteService.archieve(token);
 	}
 	
-	@PutMapping("/pinned/{id}")
-	public void pinned(@PathVariable int id)
+	@PutMapping("/pinned/{token}")
+	public void pinned(@PathVariable("token") String token)
 	{
-		noteService.pinned(id);
+		noteService.pinned(token);
 	}
 	
-	@PutMapping("/trashed/{id}")
-	public void trashed(@PathVariable int id)
+	@PutMapping("/trashed/{token}")
+	public void trashed(@PathVariable("token") String token)
 	{
-		noteService.trashed(id);
+		noteService.trashed(token);
 	}
 }

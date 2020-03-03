@@ -8,7 +8,7 @@ public interface IUserService {
 	public String addUser(UserDTO userDetails) ;
 	public boolean userLogin(UserDTO userDetails);
 	public boolean forgotpwd(UserDTO userDetails);
-	public boolean resetPassword(UserDTO userDetails);
+	public boolean resetPassword(String token, UserDTO userDetails);
 	public void sendVerify(UserEntity userEntity);
 	public boolean getVerify(String token);
 }

@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 import com.bridgelabz.fundoo.dto.NotesDTO;
 import com.bridgelabz.fundoo.entity.NotesEntity;
 import com.bridgelabz.fundoo.repository.NotesRepository;
+import com.bridgelabz.fundoo.utility.JWTOperations;
 
 @Service
 public class NoteServiceImpl {
 
 	@Autowired
-	NotesRepository notesRepository;
+	private NotesRepository notesRepository;
 
-	public void createNotes(NotesDTO notesDTO) {
+	@Autowired
+	private JWTOperations jwt;
+	
+	public void createNotes(NotesDTO notesDTO, String token) {
 		
 		NotesEntity notesEntity= new NotesEntity();		
 		BeanUtils.copyProperties(notesDTO, notesEntity);
@@ -30,61 +34,61 @@ public class NoteServiceImpl {
 	
 	}
 
-	public void edit(NotesDTO notesDTO, int id) {
-		
+	public void edit(NotesDTO notesDTO, String token) {
+		int id=jwt.tokenDecoder(token);
 		NotesEntity notesEntity= notesRepository.getAllValues(id);	
 		BeanUtils.copyProperties(notesDTO, notesEntity);
-		notesRepository.update(id, notesEntity);
+		notesRepository.update(notesEntity);
 	}
 
-	public void delete(int id) {
+	public void delete(String token) {
 		
-		notesRepository.delete(id);		
+		notesRepository.delete(token);		
 		
 	}
 
-	public void archieve(int id) {
+	public void archieve(String token) {
 		
-		NotesEntity notesEntity= notesRepository.getAllValues(id);
+		NotesEntity notesEntity= notesRepository.getAllValues(token);
 		if(notesEntity.isArchived())
 		{
 			notesEntity.setArchived(false);
-			notesRepository.update(id, notesEntity);
+			notesRepository.update(token, notesEntity);
 		}	
 		else
 		{
 			notesEntity.setArchived(true);
-			notesRepository.update(id,notesEntity);
+			notesRepository.update(token,notesEntity);
 		}
 	}
 
-	public void pinned(int id) {
+	public void pinned(String token) {
 		
-		NotesEntity notesEntity= notesRepository.getAllValues(id);
+		NotesEntity notesEntity= notesRepository.getAllValues(token);
 		if(notesEntity.isPinned())
 		{
 			notesEntity.setPinned(false);
-			notesRepository.update(id, notesEntity);
+			notesRepository.update(token, notesEntity);
 		}	
 		else
 		{
 			notesEntity.setPinned(true);
-			notesRepository.update(id,notesEntity);
+			notesRepository.update(token,notesEntity);
 		}		
 	}
 
-	public void trashed(int id) {
+	public void trashed(String token) {
 		
-		NotesEntity notesEntity= notesRepository.getAllValues(id);
+		NotesEntity notesEntity= notesRepository.getAllValues(token);
 		if(notesEntity.isTrashed())
 		{
 			notesEntity.setTrashed(false);
-			notesRepository.update(id, notesEntity);
+			notesRepository.update(token, notesEntity);
 		}	
 		else
 		{
 			notesEntity.setTrashed(true);
-			notesRepository.update(id,notesEntity);
+			notesRepository.update(token,notesEntity);
 		}
 	}
 	

@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.springframework.validation.FieldError"/>
-<fullyQualifiedTypeName name="org.springframework.validation.ObjectError"/>
-<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
-<fullyQualifiedTypeName name="com.fasterxml.jackson.core.JsonProcessingException"/>
-<fullyQualifiedTypeName name="org.springframework.boot.autoconfigure.domain.EntityScan"/>
-<fullyQualifiedTypeName name="org.hibernate.annotations.Entity"/>
-<fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
-<fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.dto.UserDetails"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.serviceimpl.RegistrationServiceImpl"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 <fullyQualifiedTypeName name="javax.persistence.Column"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
 <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
 <fullyQualifiedTypeName name="javax.security.auth.message.callback.PrivateKeyCallback.Request"/>
@@ -26,7 +16,6 @@
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.entity.UserEntity"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.repository.UserRepository"/>
 <fullyQualifiedTypeName name="javax.persistence.EntityManagerFactory"/>
-<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="org.hibernate.SessionFactory"/>
 <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Qualifier"/>
 <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
@@ -34,18 +23,13 @@
 <fullyQualifiedTypeName name="com.auth0.jwt.JWTCreator"/>
 <fullyQualifiedTypeName name="com.auth0.jwt.impl.JWTParser"/>
 <fullyQualifiedTypeName name="org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer"/>
-<fullyQualifiedTypeName name="com.bridgelabz.fundoo.utility.JWTOperations"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
 <fullyQualifiedTypeName name="javax.persistence.Transient"/>
 <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity.BodyBuilder"/>
 <fullyQualifiedTypeName name="org.springframework.web.servlet.function.ServerResponse.BodyBuilder"/>
 <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity.HeadersBuilder"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.response.Responce"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.service.IUserService"/>
-<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.response.Response"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestControllerAdvice"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.exception.UserServiceException"/>
@@ -58,6 +42,22 @@
 <fullyQualifiedTypeName name="lombok.Data"/>
 <fullyQualifiedTypeName name="javax.persistence.Id"/>
 <fullyQualifiedTypeName name="com.bridgelabz.fundoo.repository.NotesRepository"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.exception.GlobalExceptionHandler"/>
+<fullyQualifiedTypeName name="java.lang.Throwable"/>
+<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.dto.NotesDTO"/>
+<fullyQualifiedTypeName name="org.hibernate.mapping.List"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
 <fullyQualifiedTypeName name="javax.transaction.Transactional"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
 <fullyQualifiedTypeName name="org.hibernate.Session"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.dto.UserDTO"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+<fullyQualifiedTypeName name="com.bridgelabz.fundoo.utility.JWTOperations"/>
 </qualifiedTypeNameHistroy>

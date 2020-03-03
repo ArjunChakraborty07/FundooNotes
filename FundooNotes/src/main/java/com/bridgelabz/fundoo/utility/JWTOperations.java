@@ -28,7 +28,7 @@ public class JWTOperations {
 
 	}
 	
-	public String noteTokenGenerater(int id) {
+	public String tokenGenerater(int id) {
 		String token = null;
 		try {
 			token = JWT.create().withClaim("id", id).sign(Algorithm.HMAC256(SECRET));
@@ -38,7 +38,7 @@ public class JWTOperations {
 		return token;
 	}
 	
-	public int noteTokenDecoder(String token) {
+	public int tokenDecoder(String token) {
 		int id = 0;
 		if (token != null) {
 			id = JWT.require(Algorithm.HMAC256(SECRET)).build().verify(token).getClaim("id").asInt();

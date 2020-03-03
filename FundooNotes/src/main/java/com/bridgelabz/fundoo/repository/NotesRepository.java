@@ -22,7 +22,7 @@ public class NotesRepository {
 	String query="From NotesEntity where id=:";
 	
 	
-	
+	@Transactional
 	public NotesEntity getAllValues(int id2)
 	{
 		Session session = entityManager.unwrap(Session.class);
@@ -30,6 +30,7 @@ public class NotesRepository {
 		q.setParameter(id, id2);
 		return (NotesEntity) q.uniqueResult();
 	}
+	
 	@Transactional
 	public void save(NotesEntity notesEntity) 
 	{		

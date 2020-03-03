@@ -13,6 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoo.dto.UserDTO;
 import com.bridgelabz.fundoo.entity.UserEntity;
+
+
+
 @SuppressWarnings("rawtypes")
 @Repository
 public class UserRepository {
@@ -21,6 +24,16 @@ public class UserRepository {
 	
 	String email="email";
 	String query="From UserEntity where email_id=:";
+	
+	@Transactional
+	public UserEntity getAllValues(String emailid)
+	{
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery(query+email);		
+		q.setParameter(email, emailid);
+		return (UserEntity) q.uniqueResult();
+	}		
+	
 	@Transactional
 	public boolean save(UserEntity userEntity) {
 
@@ -32,8 +45,7 @@ public class UserRepository {
 			session.saveOrUpdate(userEntity);
 			return true;
 		}
-		return false;
-		
+		return false;	
 	}
 	
 	@Transactional
@@ -54,6 +66,7 @@ public class UserRepository {
 			q.setParameter(email, userDetails.getEmail());
 			return (UserDTO)q.uniqueResult();
 	}
+	
 	@Transactional
 	@Modifying
 	public void updatepassword(UserEntity userEntity) {
@@ -65,6 +78,7 @@ public class UserRepository {
 		q.setParameter(email, userEntity.getEmail());
 		q.executeUpdate();
 	}
+	
 	@Transactional
 	@Modifying
 	public void verification(UserEntity userEntity) {

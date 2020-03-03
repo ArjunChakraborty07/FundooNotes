@@ -75,9 +75,10 @@ public class UserServiceImpl implements IUserService {
 		throw new UserServiceExceptionHandler("User Not Found....", 403);
 	}
 
-	public boolean resetPassword(UserDTO userDetails) {
+	public boolean resetPassword(String token, UserDTO userDetails) {
 	
 		UserEntity userEntity = new UserEntity();
+		userDetails.setEmail(jwt.parseJWT(token));
 		BeanUtils.copyProperties(userDetails, userEntity);
 		userEntity.setPassword(encryption.encode(userEntity.getPassword()));	
 		userRepository.updatepassword(userEntity);
@@ -89,15 +90,15 @@ public class UserServiceImpl implements IUserService {
 		SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(userEntity.getEmail());
         msg.setSubject("Fundoo Verification");
-        msg.setText("http://localhost:8080/users/userVerification/"+ jwt.jwtToken(userEntity.getEmail())); 
+        msg.setText("http://localhost:8080/users/userVerification/"+ jwt.tokenGenerater(userRepository.getAllValues(userEntity.getEmail()).getId())); 
         javaMailSender.send(msg);
 	}
 	
 	public boolean getVerify(String token){
 	
-		String email=jwt.parseJWT(token);
+		int id=jwt.tokenDecoder(token);				
 		UserEntity userEntity = new UserEntity();
-		userEntity.setEmail(email);
+		userEntity.setId(id);
 		userEntity.setVerify(true);
 		userRepository.verification(userEntity);	
 		return true;		
