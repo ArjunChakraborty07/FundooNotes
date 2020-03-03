@@ -1,0 +1,53 @@
+package com.bridgelabz.fundoo.repository;
+
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.bridgelabz.fundoo.entity.NotesEntity;
+import com.bridgelabz.fundoo.entity.UserEntity;
+
+@SuppressWarnings("rawtypes")
+@Repository
+public class NotesRepository {
+
+	@Autowired
+	private EntityManager entityManager;
+	
+	String id="id";
+	String query="From NotesEntity where id=:";
+	
+	@Transactional
+	public void save(NotesEntity notesEntity) 
+	{		
+		Session session = entityManager.unwrap(Session.class);
+		session.saveOrUpdate(notesEntity);			
+	}
+	
+	@Transactional
+	public void update(NotesEntity notesEntity)
+	{
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery(query+id);		
+		q.setParameter(id, notesEntity.getNoteId());
+		NotesEntity temp=(NotesEntity) q.uniqueResult();
+		BeanUtils.copyProperties(notesEntity, temp);
+		session.saveOrUpdate(notesEntity);
+	}
+
+	public void delete(NotesEntity notesEntity) 
+	{
+		Session session = entityManager.unwrap(Session.class);
+		session.delete(notesEntity);				
+	}
+	
+	
+
+	
+}

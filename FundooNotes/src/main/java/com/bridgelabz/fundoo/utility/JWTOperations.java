@@ -27,5 +27,23 @@ public class JWTOperations {
 		return email;
 
 	}
+	
+	public String noteTokenGenerater(int id) {
+		String token = null;
+		try {
+			token = JWT.create().withClaim("id", id).sign(Algorithm.HMAC256(SECRET));
+		} catch (IllegalArgumentException | JWTCreationException e) {
+			e.printStackTrace();
+		}
+		return token;
+	}
+	
+	public int noteTokenDecoder(String token) {
+		int id = 0;
+		if (token != null) {
+			id = JWT.require(Algorithm.HMAC256(SECRET)).build().verify(token).getClaim("id").asInt();
+		}
+		return id;
+	}
 
 }

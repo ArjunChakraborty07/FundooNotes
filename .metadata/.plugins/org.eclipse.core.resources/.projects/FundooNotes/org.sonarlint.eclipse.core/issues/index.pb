@@ -3,8 +3,6 @@ o
 ?src/main/java/com/bridgelabz/fundoo/FundooNotesApplication.java,a/e/ae12ce049e37fa67e7c016953c56a0a8200dc8ef
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-h
-8src/main/java/com/bridgelabz/fundoo/dto/UserDetails.java,1/7/175e80e851d0d1dbb5b965d075fa92a7dca505b7
 t
 Dsrc/main/java/com/bridgelabz/fundoo/configuration/SwaggerConfig.java,9/7/979798c19189247a0f385c0d70d9ae07aacdc32f
 }
@@ -17,18 +15,12 @@ r
 Bsrc/main/java/com/bridgelabz/fundoo/repository/UserRepository.java,f/b/fb50b408378c92250fada92b0d87f74961929909
 j
 :src/main/java/com/bridgelabz/fundoo/entity/UserEntity.java,3/1/31a9a3542de0ba48126a374a080aaf374a4e884d
-r
-Bsrc/main/java/com/bridgelabz/fundoo/exception/GlobalException.java,d/c/dcc3b1682a8eef97abc8361d6b653bb9538acf0c
-w
-Gsrc/main/java/com/bridgelabz/fundoo/exception/UserServiceException.java,9/9/99069b588e19c10a406702c4041c0c8634b82883
 Y
 )src/main/resources/application.properties,0/6/06f65155ec73600b9fc5c4dc2883d4bb84d8e284
 m
 =src/main/java/com/bridgelabz/fundoo/service/IUserService.java,0/e/0e5c8efabed00192106c48fff1d059ce9c946fda
 t
 Dsrc/main/java/com/bridgelabz/fundoo/serviceimpl/UserServiceImpl.java,b/0/b049c0202dd745df1b474cde22fec2e8719c9206
-d
-4src/main/java/com/bridgelabz/fundoo/dto/NoteDTO.java,9/0/90450ec12cb82241eb632103d351a9b985267d89
 y
 Isrc/main/java/com/bridgelabz/fundoo/exception/GlobalExceptionHandler.java,a/b/ab78246ce98b3250f588ef2292001684b4ce2abc
 ~

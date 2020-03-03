@@ -18,54 +18,45 @@ import com.bridgelabz.fundoo.service.IUserService;
 public class UserController {
 	@Autowired
 	private IUserService userService;
-	
 
 	@PostMapping("/users/register")
 	public ResponseEntity<Response> register(@RequestBody UserDTO userDetails) {
 		String result = userService.addUser(userDetails);
-			return  ResponseEntity.status(HttpStatus.OK).body(new Response(200, result));		
+		return ResponseEntity.status(HttpStatus.OK).body(new Response(200, result));
 	}
-	
+
 	@GetMapping("/users/login")
-	public ResponseEntity<Response> login (@RequestBody UserDTO userDetails)
-	{
-		if (userService.userLogin(userDetails))
-		{
+	public ResponseEntity<Response> login(@RequestBody UserDTO userDetails) {
+		if (userService.userLogin(userDetails)) {
 			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Login Successfull"));
 		}
-	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Login Denied"));			
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Login Denied"));
 	}
+
 	@PutMapping("/users/forgotPassword")
-	public ResponseEntity<Response> forgotPassword(@RequestBody UserDTO userDetails)
-	{
-		if(userService.forgotpwd(userDetails))
-		{
+	public ResponseEntity<Response> forgotPassword(@RequestBody UserDTO userDetails) {
+		if (userService.forgotpwd(userDetails)) {
 			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Verification Mail send"));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Invalid Email Id"));
 	}
-	
+
 	@PutMapping("/users/resetPassword/{token}")
-	public ResponseEntity<Response> resetPassword(@PathVariable("token") String token, @RequestBody UserDTO userDetails)
-	{
-		
-		 if(userService.resetPassword(userDetails))
-		 { 
-			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Password Reset Successful")); 
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Update Denied"));
+	public ResponseEntity<Response> resetPassword(@PathVariable("token") String token,
+			@RequestBody UserDTO userDetails) {
+
+		if (userService.resetPassword(userDetails)) {
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "Password Reset Successful"));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Update Denied"));
 	}
-		
+
 	@GetMapping("/users/userVerification/{token}")
-	public ResponseEntity<Response> userVerification(@PathVariable("token") String token)
-	{
-		if(userService.getVerify(token))
-		{
+	public ResponseEntity<Response> userVerification(@PathVariable("token") String token) {
+		if (userService.getVerify(token)) {
 			return ResponseEntity.status(HttpStatus.OK).body(new Response(200, "OK"));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(200, "Verification Unsucessful"));
 	}
-	
-	
-	
+
 }

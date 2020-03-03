@@ -5,7 +5,7 @@ import com.bridgelabz.fundoo.entity.UserEntity;
 
 public interface IUserService {
 
-	public String addUser(UserDTO userDetails);
+	public String addUser(UserDTO userDetails) ;
 	public boolean userLogin(UserDTO userDetails);
 	public boolean forgotpwd(UserDTO userDetails);
 	public boolean resetPassword(UserDTO userDetails);

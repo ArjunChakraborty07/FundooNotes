@@ -10,12 +10,12 @@ import com.bridgelabz.fundoo.response.Response;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
 	
 	@ExceptionHandler(UserServiceExceptionHandler.class)
 	public ResponseEntity<Response> handleAllUserException(UserServiceExceptionHandler exception) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new Response(exception.getStatus(), exception.getMessage()));
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(exception.getStatus(), exception.getMessage()));
+	
 	}
 
 }

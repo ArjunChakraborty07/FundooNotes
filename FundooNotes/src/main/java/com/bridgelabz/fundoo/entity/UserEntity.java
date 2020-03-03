@@ -1,10 +1,13 @@
 package com.bridgelabz.fundoo.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -52,7 +55,9 @@ public class UserEntity {
 	@Column(name = "password")
 	public String password;
 	@Column(name = "verification")
-	public boolean verify;
+	public boolean verify;	
+	@OneToMany
+	private List<NotesEntity> notesEntity;
 
 	public UserEntity() {
 

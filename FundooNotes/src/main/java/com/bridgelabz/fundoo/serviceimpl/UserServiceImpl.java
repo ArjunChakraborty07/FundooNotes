@@ -17,6 +17,7 @@ import com.bridgelabz.fundoo.utility.JWTOperations;
 @Service
 public class UserServiceImpl implements IUserService {
 
+	
 	@Autowired
 	private JWTOperations jwt;
 	
@@ -49,11 +50,15 @@ public class UserServiceImpl implements IUserService {
 	public boolean userLogin(UserDTO userDetails) {				
 		
 			UserEntity userEntity=userRepository.loginProcess(userDetails);	
+			if(userEntity==null)
+				throw new UserServiceExceptionHandler("Email Id not registered...", 402);
 			if(userEntity.getVerify())
 			{
 				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
 			}
-				throw new UserServiceExceptionHandler("User Verification Pending...", 402);
+			throw new UserServiceExceptionHandler("User Verification Pending...", 402);
+		
+		
 	}
 	
 	public boolean forgotpwd(UserDTO userDetails) {
@@ -98,6 +103,6 @@ public class UserServiceImpl implements IUserService {
 		return true;		
 	}
 
-	        	
+	
 	
 }
