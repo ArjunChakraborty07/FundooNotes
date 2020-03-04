@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoo.dto.UserDTO;
+import com.bridgelabz.fundoo.entity.NotesEntity;
 import com.bridgelabz.fundoo.entity.UserEntity;
 
 
@@ -25,8 +26,18 @@ public class UserRepository {
 	String email="email";
 	String query="From UserEntity where email_id=:";
 	
+	
 	@Transactional
-	public UserEntity getAllValues(String emailid)
+	public UserEntity getUserById(int id)
+	{
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery("From UserEntity where id=:uid");		
+		q.setParameter("uid", id);
+		return (UserEntity) q.uniqueResult();
+	}
+	
+	@Transactional
+	public UserEntity getUserByMail(String emailid)
 	{
 		Session session = entityManager.unwrap(Session.class);
 		Query q=session.createQuery(query+email);		
@@ -85,9 +96,9 @@ public class UserRepository {
 		
 		Session session = entityManager.unwrap(Session.class);
 		userEntity.setVerify(true);
-		Query q=session.createQuery("UPDATE UserEntity set verify =:verify where email =:email");
+		Query q=session.createQuery("UPDATE UserEntity set verify =:verify where id =:email");
 		q.setParameter("verify", userEntity.getVerify());
-		q.setParameter("email", userEntity.getEmail());
+		q.setParameter("email", userEntity.getId());
 		q.executeUpdate();
 	}
 	

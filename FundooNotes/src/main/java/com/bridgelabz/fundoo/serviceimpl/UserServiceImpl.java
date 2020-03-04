@@ -90,7 +90,7 @@ public class UserServiceImpl implements IUserService {
 		SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(userEntity.getEmail());
         msg.setSubject("Fundoo Verification");
-        msg.setText("http://localhost:8080/users/userVerification/"+ jwt.tokenGenerater(userRepository.getAllValues(userEntity.getEmail()).getId())); 
+        msg.setText("http://localhost:8080/users/userVerification/"+ jwt.tokenGenerater(userRepository.getUserByMail(userEntity.getEmail()).getId())); 
         javaMailSender.send(msg);
 	}
 	
