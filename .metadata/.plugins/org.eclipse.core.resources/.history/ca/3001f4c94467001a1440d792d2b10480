@@ -1,0 +1,8 @@
+package com.bridgelabz.fundoo.utility;
+
+import java.io.Serializable;
+
+public class MailService implements Serializable {
+
+	private String message;
+}

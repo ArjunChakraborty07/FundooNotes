@@ -1,0 +1,14 @@
+package com.bridgelabz.fundoo.repository;
+
+import com.bridgelabz.fundoo.dto.UserDTO;
+import com.bridgelabz.fundoo.entity.UserEntity;
+
+public interface IUserRepository {
+
+	public Optional<UserEntity> getUserById(int id);
+	public UserEntity getUserByMail(String emailId);
+	public boolean save(UserEntity userEntity);
+	public UserEntity loginProcess(UserDTO userDetails);
+	public void updatepassword(UserEntity userEntity);
+	public void verification(UserEntity userEntity);
+}

@@ -1,18 +1,20 @@
 package com.bridgelabz.fundoo.serviceimpl;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoo.dto.UserDTO;
 import com.bridgelabz.fundoo.entity.UserEntity;
-import com.bridgelabz.fundoo.exception.UserServiceExceptionHandler;
-import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.exception.UserCustomException;
+import com.bridgelabz.fundoo.exception.UserCustomException.TypeOfException;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
 import com.bridgelabz.fundoo.service.IUserService;
 import com.bridgelabz.fundoo.utility.JWTOperations;
+import com.bridgelabz.fundoo.utility.SimpleMail;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -25,54 +27,46 @@ public class UserServiceImpl implements IUserService {
 	private BCryptPasswordEncoder encryption;
 
 	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private JavaMailSender javaMailSender;
+	private UserRepositoryImpl userRepository;
 
-	
+	@Autowired
+	private SimpleMail simpleMail;
+	//throw new UserCustomException("Email Id already exist...", TypeOfException.FORBIDDEN,null
 
 	public String addUser(UserDTO userDetails) {
 
+		
 		UserEntity userEntity = new UserEntity();		
 		BeanUtils.copyProperties(userDetails, userEntity);
 		userEntity.setPassword(encryption.encode(userEntity.getPassword()));		
-		userEntity.setVerify(false);		
-		if(userRepository.save(userEntity))
-		{
-			sendVerify(userEntity);
-			return "Data processing successful";
-		}
-		throw new UserServiceExceptionHandler("User Already Exist....", 401);
+		userEntity.setVerify(false);
+		if(userRepository.getUserByMail(userEntity.getEmail()).isPresent())
+			throw new UserCustomException("Email Id already exist...", TypeOfException.FORBIDDEN,null);
+		userRepository.save(userEntity);
+		sendVerify(userEntity);
+		return jwt.tokenGenerater(userRepository.getUserByMail(userEntity.getEmail()).get().id);				
 	}
 
 
-	public boolean userLogin(UserDTO userDetails) {				
-		
-			UserEntity userEntity=userRepository.loginProcess(userDetails);	
-			if(userEntity==null)
-				throw new UserServiceExceptionHandler("Email Id not registered...", 402);
-			if(userEntity.getVerify())
-			{
-				return (encryption.matches(userDetails.getPassword(),userEntity.getPassword()));
-			}
-			throw new UserServiceExceptionHandler("User Verification Pending...", 402);
+	public boolean userLogin(String email, String password) {				
 		
 		
+			UserEntity userEntity=userRepository.loginProcess(email,password).orElseThrow(()-> new UserCustomException("Email Id not registered...", TypeOfException.USER_NOT_FOUND,null));																							
+			System.out.println(userEntity.getVerify());
+			if(userEntity.getVerify().equals(Optional.of(false)))
+				throw new UserCustomException("User Verification Pending...", TypeOfException.FORBIDDEN,null);								
+			
+			return (encryption.matches(password,userEntity.getPassword()));
+											
 	}
 	
-	public boolean forgotpwd(UserDTO userDetails) {
-		
-		if(userRepository.forgetpwd(userDetails)!=null)
-		{		
-			SimpleMailMessage msg = new SimpleMailMessage();
-	        msg.setTo(userDetails.getEmail());
-	        msg.setSubject("Fundoo Forgot Password");
-	        msg.setText("Link for resetting password " + "\r\nhttp://localhost:8080/users/resetPassword/"+jwt.jwtToken(userDetails.getEmail()));
-	        javaMailSender.send(msg);
-	        return true;
-		}
-		throw new UserServiceExceptionHandler("User Not Found....", 403);
+	public String forgotpwd(UserDTO userDetails) {
+				
+		userRepository.loginProcess(userDetails.getEmail(),userDetails.getPassword()).orElseThrow(()-> new UserCustomException("User Not Found....", TypeOfException.USER_NOT_FOUND,null));					
+		String message="Link for resetting password " + "\r\nhttp://localhost:8080/users/resetPassword/"+jwt.jwtToken(userDetails.getEmail());
+		String subject="Fundoo Forgot Password";
+		simpleMail.simpleMail(userDetails.getEmail(),subject, message);
+	    return "true";				
 	}
 
 	public boolean resetPassword(String token, UserDTO userDetails) {
@@ -87,11 +81,12 @@ public class UserServiceImpl implements IUserService {
 
 	public void sendVerify(UserEntity userEntity) {
 				
-		SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(userEntity.getEmail());
-        msg.setSubject("Fundoo Verification");
-        msg.setText("http://localhost:8080/users/userVerification/"+ jwt.tokenGenerater(userRepository.getUserByMail(userEntity.getEmail()).getId())); 
-        javaMailSender.send(msg);
+
+		String email=userEntity.getEmail();
+		String subject="Fundoo Verification";
+		
+		String message="http://localhost:8080/users/userVerification/"+ jwt.tokenGenerater(userRepository.getUserByMail(userEntity.getEmail()).get().id);
+		simpleMail.simpleMail(email, subject, message);
 	}
 	
 	public boolean getVerify(String token){
@@ -103,7 +98,11 @@ public class UserServiceImpl implements IUserService {
 		userRepository.verification(userEntity);	
 		return true;		
 	}
-
 	
+	public UserEntity getUsers()
+	{
+		
+		return userRepository.getUserById(34).orElseThrow((()->new UserCustomException("User Not Found....", TypeOfException.USER_NOT_FOUND,null)));
+	}
 	
 }

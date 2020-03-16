@@ -1,0 +1,13 @@
+
+
+java:S40429"IUse "java.nio.Files#delete" here for better messages on error conditions.(²Œ­ûÿÿÿÿ8£°ÃÇ.HRMAJORZ
+CODE_SMELL
+u	java:S8999";Do something with the "boolean" value returned by "delete".(²Œ­ûÿÿÿÿ8£°ÃÇ.HRMINORZVULNERABILITY
+y
+java:S3457;"AFormat specifiers should be used instead of string concatenation.(›£ğ´ÿÿÿÿÿ8£°ÃÇ.HRMAJORZ
+CODE_SMELL
+t
+java:S3457E"AFormat specifiers should be used instead of string concatenation.(²éÙä8£°ÃÇ.H‘RMAJORZ
+CODE_SMELL
+|
+java:S2095."NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(ŠÀø¯8£°ÃÇ.H’RBLOCKERZBUG

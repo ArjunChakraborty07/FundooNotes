@@ -1,0 +1,14 @@
+package com.bridgelabz.fundoo.repositoryimpl;
+@Repository
+public class RedisUserRepository {
+
+    private HashOperations hashOperations;
+
+    private RedisTemplate redisTemplate;
+
+    public RedisUserRepository(RedisTemplate redisTemplate){
+        this.redisTemplate = redisTemplate;
+        this.hashOperations = this.redisTemplate.opsForHash();
+    }
+...
+}

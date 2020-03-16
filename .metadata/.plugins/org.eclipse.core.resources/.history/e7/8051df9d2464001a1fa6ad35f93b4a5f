@@ -1,0 +1,30 @@
+ackage com.bridgelabz.fundoo.response;
+
+import lombok.Data;
+
+@Data
+public class NoteResponse1 {
+	
+	String message;
+	int statusCode;
+	Object data;
+
+	public NoteResponse1(String message, int statusCode, Object data) {
+		super();
+		this.message = message;
+		this.statusCode = statusCode;
+		this.data = data;
+	}
+	
+	public NoteResponse1(String message, int statusCode) {
+		super();
+		this.message = message;
+		this.statusCode = statusCode;
+	}
+
+	
+	
+	
+	
+
+}

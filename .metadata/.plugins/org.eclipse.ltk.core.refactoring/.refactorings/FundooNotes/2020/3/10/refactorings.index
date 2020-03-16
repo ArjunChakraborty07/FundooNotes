@@ -2,3 +2,14 @@
 1583141997307	Rename type 'UserServiceException'
 1583143552053	Rename type 'UserDetails'
 1583145418842	Rename type 'NoteDTO'
+1583400245924	Delete element
+1583409009669	Rename type 'SecurityConfiguratuion'
+1583469287379	Delete element
+1583472651294	Delete element
+1583559295869	Rename type 'Response'
+1583562591661	Delete element
+1583586914976	Rename package 'com.bridgelabz.fundoo.repository'
+1583586946100	Delete element
+1583587419584	Rename type 'LabelRepository'
+1583587561678	Rename type 'NotesRepository'
+1583587579934	Rename type 'UserRepository'

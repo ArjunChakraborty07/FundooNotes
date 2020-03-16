@@ -1,0 +1,50 @@
+package com.bridgelabz.fundoo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bridgelabz.fundoo.response.UserResponse;
+import com.bridgelabz.fundoo.serviceimpl.CollabratorServiceImpl;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Response;
+
+
+@RestController
+public class CollabController {
+	@Autowired
+	private CollabratorServiceImpl service;
+	/* API for adding a collaborator */
+	@PostMapping("/collabrator/add")
+	public ResponseEntity<UserResponse> addCollab(@RequestParam("email") String email, @RequestParam("noteId") Long noteId, @RequestHeader("token") String token) {
+		service.addcolab(noteId, email, token);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(token, "Collaboration Successful...",null));
+
+	}
+
+	/* API for removing a collaborator */
+	@DeleteMapping("/collabrator/remove")
+	public ResponseEntity<UserResponse> removeCollab(@RequestParam("email") String email, @RequestParam("noteId") Long noteId, @RequestHeader("token") String token) {
+		service.removeCollab(noteId, token, email);
+		return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(token, "Label Creation Successful...",null));
+
+	}
+
+	/* API for getting all collaborators */
+	@GetMapping("/getallcollab")
+	public ResponseEntity<UserResponse> getAllCollab(@RequestHeader("token") String token) {
+		List<Note> notes = service.getAllCollabs(token);
+		return ResponseEntity.status(HttpStatus.FOUND).body(new UserResponse(token, "Label Creation Successful...",null));
+
+	}
+
+}

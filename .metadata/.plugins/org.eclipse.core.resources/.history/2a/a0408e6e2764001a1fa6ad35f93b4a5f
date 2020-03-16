@@ -1,0 +1,38 @@
+package com.bridgelabz.fundoo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+import com.bridgelabz.fundoo.serviceimpl.LabelServiceImpl;
+
+@RestController
+@RequestMapping("/label")
+public class LabelController {
+
+	@Autowired
+	private LabelServiceImpl labelServiceImpl;
+	
+	public void createLabel(LabelDTO labelDTO, String token)
+	{
+		labelServiceImpl.createLabel(labelDTO, token);
+	}
+	public void addLabeltoNote(int labelId, int noteId, String token)
+	{
+		labelServiceImpl.addLabeltoNote(labelId, noteId, token);
+	}
+	public void createLabelToNote(LabelDTO labelDTO,int noteId, String token)
+	{
+		labelServiceImpl.createLabelToNote(noteId, token, labelDTO);
+	}
+	public void update(LabelDTO labelDTO, int labelId, String token)
+	{
+		labelServiceImpl.updateLabel(labelDTO, labelId, token);
+	}
+	public void delete(String labelName, String token)
+	{
+		labelServiceImpl.deleteLabel(labelName, token);
+	}
+	
+}

@@ -1,0 +1,37 @@
+package com.bridgelabz.fundoo.configuration;
+
+import java.io.File;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+
+
+
+
+@Configuration
+@EnableElasticsearchRepositories(basePackages = "com.bridgelabz.fundoo.repository")
+public class ElasticSearchConfig {
+
+	@Bean
+	NodeBuilder nodeBuilder() {
+		return new NodeBuilder();
+	
+	}
+	
+	@Bean
+	ElasticsearchOperations elasticsearchoperations() {
+		File tempFile=null;
+		try {
+			 tempFile= File.createTempFile("temp-elastic", Long.toString(System.nanoTime()) );
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+
+}

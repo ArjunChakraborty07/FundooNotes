@@ -1,0 +1,100 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+import com.bridgelabz.fundoo.entity.LabelEntity;
+import com.bridgelabz.fundoo.entity.NotesEntity;
+import com.bridgelabz.fundoo.entity.UserEntity;
+import com.bridgelabz.fundoo.exception.LabelCustomException;
+import com.bridgelabz.fundoo.exception.LabelCustomException.TypeOfException;
+import com.bridgelabz.fundoo.repository.ILabelRepository;
+import com.bridgelabz.fundoo.repositoryimpl.NotesRepositoryImpl;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
+import com.bridgelabz.fundoo.service.ILabelService;
+import com.bridgelabz.fundoo.utility.JWTOperations;
+
+@Service
+public class LabelServiceImpl implements ILabelService{
+
+	@Autowired
+	private ILabelRepository labelRepository;
+	
+	@Autowired
+	private NotesRepositoryImpl notesRepository;
+
+	@Autowired
+	private UserRepositoryImpl userRepository;
+	@Autowired
+	private JWTOperations jwt;	
+	
+	public LabelEntity createLabel(LabelDTO labelDTO, String token) {
+		LabelEntity labelEntity= new LabelEntity();
+		BeanUtils.copyProperties(labelDTO, labelEntity);	
+		labelEntity.setCreatedDate(LocalDateTime.now());		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()-> new LabelCustomException("Label Not Found...", " ", TypeOfException.USER_NOT_FOUND));
+		user.getLabel().add(labelEntity);
+		userRepository.save(user);
+		return labelEntity;
+	}
+	
+	public LabelEntity getLabelById(int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		
+		return labelRepository.getLabelById(labelId, userId).orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));				
+	}
+	
+	public LabelEntity getLabelByName(String labelName)
+	{
+		return labelRepository.getLabelByName(labelName).orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));
+	}
+	
+	public void updateLabel(LabelDTO labelDTO, int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()-> new LabelCustomException("User Not Found...", " ", TypeOfException.USER_NOT_FOUND));
+		LabelEntity labelEntity=labelRepository.getLabelById(labelId, userId).orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));
+		BeanUtils.copyProperties(labelDTO, labelEntity);
+		labelEntity.setUpdatedDate(LocalDateTime.now());
+		user.getLabel().add(labelEntity);
+		userRepository.save(user);
+	}
+	
+	public void deleteLabel(String labelName, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new LabelCustomException("User Not Found...", " ", TypeOfException.USER_NOT_FOUND));
+		user.getLabel().stream().filter(l->l.getName().equals(labelName)).findFirst().orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));		
+		labelRepository.deleteLabel(labelName, userId);
+	}
+	
+	public void addLabeltoNote(int labelId, int noteId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()-> new LabelCustomException("User Not Found...", " ", TypeOfException.USER_NOT_FOUND));		
+		LabelEntity label=labelRepository.getLabelById(labelId, userId).orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));
+		NotesEntity note=notesRepository.getNote(userId, noteId).orElseThrow(()-> new LabelCustomException("Note Not Found...", null, TypeOfException.NOTE_NOT_FOUND));
+		note.getLabel().add(label);
+		userRepository.save(user);
+	}
+	public void createLabelToNote(int noteId, String token, LabelDTO labelDTO)
+	{
+		LabelEntity label=createLabel(labelDTO, token);
+		addLabeltoNote(label.getId(), noteId, token);
+	}
+	
+	public void removeLabelFromNote(String labelName, int noteId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()-> new LabelCustomException("User Not Found...", " ", TypeOfException.USER_NOT_FOUND));
+		LabelEntity labelEntity=labelRepository.getLabelByName(labelName).orElseThrow(()->new LabelCustomException("Label Not Found...", " ", TypeOfException.LABEL_NOT_FOUND));
+		NotesEntity note=notesRepository.getNote(userId, noteId).orElseThrow(()-> new LabelCustomException("Note Not Found...", null, TypeOfException.NOTE_NOT_FOUND));
+		note.getLabel().remove(labelEntity);
+		userRepository.save(user);
+	}
+}

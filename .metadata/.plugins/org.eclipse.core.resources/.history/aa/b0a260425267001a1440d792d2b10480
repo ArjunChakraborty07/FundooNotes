@@ -1,0 +1,5 @@
+package com.bridgelabz.fundoo.utility;
+
+public class RabbitMQMessage {
+
+}

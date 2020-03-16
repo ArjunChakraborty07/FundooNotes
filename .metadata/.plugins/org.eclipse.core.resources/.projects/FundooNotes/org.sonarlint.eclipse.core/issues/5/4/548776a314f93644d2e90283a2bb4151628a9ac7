@@ -1,0 +1,7 @@
+
+
+java:S3305"\Inject this field value directly into "routeExchangeTemplate", the only method that uses it.(­øìıÿÿÿÿHöRCRITICALZ
+CODE_SMELL
+†
+java:S1192"RDefine a constant instead of duplicating this literal "rmq.rube.exchange" 3 times.(“Ô¬¯ÿÿÿÿÿH÷RCRITICALZ
+CODE_SMELL

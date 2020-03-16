@@ -1,0 +1,8 @@
+package com.bridgelabz.fundoo.service;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+
+public interface ILabelService {
+
+	public void createLabel(LabelDTO labelDTO);
+}

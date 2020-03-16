@@ -1,0 +1,41 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.entity.NotesEntity;
+import com.bridgelabz.fundoo.entity.UserEntity;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
+import com.bridgelabz.fundoo.service.ICollaboratorService;
+import com.bridgelabz.fundoo.utility.JWTOperations;
+
+@Service
+public class CollaboratorServiceImpl implements ICollaboratorService{
+
+	@Autowired
+	private JWTOperations jwt;
+	
+	@Autowired
+	private UserRepositoryImpl userRepository;
+	
+	
+	public void addcolab(Long noteId, String email, String token) {
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserByMail(email).orElseThrow(()->new );
+		
+		
+	}
+
+	public void removeCollab(Long noteId, String token, String email) {
+		
+		
+	}
+
+	public List<NotesEntity> getAllCollabs(String token) {
+		
+		return null;
+	}
+
+}

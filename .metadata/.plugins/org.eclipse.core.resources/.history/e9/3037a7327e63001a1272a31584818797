@@ -1,0 +1,55 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+import com.bridgelabz.fundoo.entity.LabelEntity;
+import com.bridgelabz.fundoo.repository.ILabelRepository;
+import com.bridgelabz.fundoo.service.ILabelService;
+import com.bridgelabz.fundoo.utility.JWTOperations;
+
+@Service
+public class LabelServiceImpl implements ILabelService{
+
+	@Autowired
+	private ILabelRepository labelRepository;
+	@Autowired
+	private JWTOperations jwt;	
+	
+	public void createLabel(LabelDTO labelDTO) {
+		LabelEntity labelEntity= new LabelEntity();
+		BeanUtils.copyProperties(labelDTO, labelEntity);	
+		labelEntity.setCreatedDate(LocalDateTime.now());
+		labelRepository.save(labelEntity);
+	}
+	
+	public LabelEntity getLabelById(int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		return labelRepository.getLabelById(labelId, userId);				
+	}
+	
+	public LabelEntity getLabelByName(String labelName)
+	{
+		return labelRepository.getLabelByName(labelName);
+	}
+	
+	public void updateLabel(LabelDTO labelDTO, int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		LabelEntity labelEntity= new LabelEntity();
+		labelEntity=labelRepository.getLabelById(labelId, userId);
+		BeanUtils.copyProperties(labelDTO, labelEntity);
+		labelRepository.updateLabel(labelEntity.getName(), userId, labelId); 
+	}
+	
+	public void deleteLabel(String labelName, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		labelRepository.deleteLabel(labelName, userId);
+	}
+}

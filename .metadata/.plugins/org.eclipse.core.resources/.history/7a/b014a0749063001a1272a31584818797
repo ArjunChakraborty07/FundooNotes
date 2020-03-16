@@ -1,0 +1,100 @@
+package com.bridgelabz.fundoo.repositoryimpl;
+
+
+
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.stereotype.Repository;
+
+import com.bridgelabz.fundoo.dto.UserDTO;
+import com.bridgelabz.fundoo.entity.UserEntity;
+import com.bridgelabz.fundoo.repository.IUserRepository;
+
+
+
+@SuppressWarnings("rawtypes")
+@Repository
+public class UserRepositoryImpl implements IUserRepository{
+	@Autowired
+	private EntityManager entityManager;
+	
+	String email="email";
+	String query="From UserEntity where email_id=:";
+	
+	
+	@Transactional
+	public Optional<UserEntity> getUserById(int id)
+	{
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery("From UserEntity where id=:uid");		
+		q.setParameter("uid", id);
+		return q.uniqueResultOptional();
+	}
+	
+	@Transactional
+	public UserEntity getUserByMail(String emailId)
+	{
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery(query+email);		
+		q.setParameter(email, emailId);
+		return (UserEntity) q.uniqueResult();
+	}		
+	
+	@Transactional
+	public Optional<boolean> save(UserEntity userEntity) { // Optional<Boolean>
+
+		Session session = entityManager.unwrap(Session.class);
+		Query q=session.createQuery(query+email);
+		q.setParameter(email, userEntity.getEmail());
+		if((UserEntity)q.uniqueResult()==null)
+		{				
+			session.saveOrUpdate(userEntity);
+			return Optional.of(true);
+		}
+		return Optional.of(false);
+	}
+	
+	@Transactional
+	public Optional<UserEntity> loginProcess(UserDTO userDetails)
+	{
+
+		Session session = entityManager.unwrap(Session.class);		
+		Query q=session.createQuery(query+email);
+		q.setParameter(email, userDetails.getEmail());
+		return q.uniqueResultOptional();
+		
+	}
+	
+	@Transactional
+	@Modifying
+	public void updatepassword(UserEntity userEntity) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		
+		Query q=session.createQuery("UPDATE UserEntity set password =:password where email =:"+email);
+		q.setParameter("password", userEntity.getPassword());
+		q.setParameter(email, userEntity.getEmail());
+		q.executeUpdate();
+	}
+	
+	@Transactional
+	@Modifying
+	public void verification(UserEntity userEntity) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		userEntity.setVerify(true);
+		Query q=session.createQuery("UPDATE UserEntity set verify =:verify where id =:email");
+		q.setParameter("verify", userEntity.getVerify());
+		q.setParameter("email", userEntity.getId());
+		q.executeUpdate();
+	}
+
+	
+}

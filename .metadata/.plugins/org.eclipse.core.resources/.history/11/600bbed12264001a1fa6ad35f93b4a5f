@@ -1,0 +1,82 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+import com.bridgelabz.fundoo.entity.LabelEntity;
+import com.bridgelabz.fundoo.entity.NotesEntity;
+import com.bridgelabz.fundoo.entity.UserEntity;
+import com.bridgelabz.fundoo.repository.ILabelRepository;
+import com.bridgelabz.fundoo.repositoryimpl.NotesRepositoryImpl;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
+import com.bridgelabz.fundoo.service.ILabelService;
+import com.bridgelabz.fundoo.utility.JWTOperations;
+
+@Service
+public class LabelServiceImpl implements ILabelService{
+
+	@Autowired
+	private ILabelRepository labelRepository;
+	
+	@Autowired
+	private NotesRepositoryImpl notesRepository;
+
+	@Autowired
+	private UserRepositoryImpl userRepository;
+	@Autowired
+	private JWTOperations jwt;	
+	
+	public LabelEntity createLabel(LabelDTO labelDTO, String token) {
+		LabelEntity labelEntity= new LabelEntity();
+		BeanUtils.copyProperties(labelDTO, labelEntity);	
+		labelEntity.setCreatedDate(LocalDateTime.now());		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(exceptionSupplier);
+		user.getLabel().add(labelEntity);
+		return labelEntity;
+	}
+	
+	public LabelEntity getLabelById(int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		return labelRepository.getLabelById(labelId, userId).orElseThrow(arg0);				
+	}
+	
+	public LabelEntity getLabelByName(String labelName)
+	{
+		return labelRepository.getLabelByName(labelName).orElseThrow(exceptionSupplier);
+	}
+	
+	public void updateLabel(LabelDTO labelDTO, int labelId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		LabelEntity labelEntity=labelRepository.getLabelById(labelId, userId).orElseThrow(exceptionSupplier);
+		BeanUtils.copyProperties(labelDTO, labelEntity);
+		labelEntity.setUpdatedDate(LocalDateTime.now());
+		labelRepository.updateLabel(labelEntity.getName(), userId, labelId); 
+	}
+	
+	public void deleteLabel(String labelName, String token)
+	{
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(exceptionSupplier);
+		LabelEntity label=user.getLabel().stream().filter(l->l.getName().equals(labelName)).findFirst().orElseThrow(exceptionSupplier);
+		labelRepository.deleteLabel(labelName, userId);
+	}
+	
+	public void addLabeltoNote(int labelId, int noteId, String token)
+	{
+		int userId=jwt.tokenDecoder(token);		
+		LabelEntity label=labelRepository.getLabelById(labelId, userId).orElseThrow(exceptionSupplier);
+		NotesEntity note=notesRepository.getNote(userId, noteId);
+		note.getLabel().add(label);
+	}
+	public void createLabelToNote(int noteId, String token, LabelDTO labelDTO)
+	{
+		LabelEntity label=createLabel(labelDTO, token);
+		addLabeltoNote(label.getId(), noteId, token);
+	}
+}

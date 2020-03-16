@@ -1,0 +1,153 @@
+package com.bridgelabz.fundoo.serviceimpl;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.fundoo.dto.NotesDTO;
+import com.bridgelabz.fundoo.entity.NotesEntity;
+import com.bridgelabz.fundoo.entity.UserEntity;
+import com.bridgelabz.fundoo.exception.NotesCustomException;
+import com.bridgelabz.fundoo.exception.NotesCustomException.TypeOfException;
+import com.bridgelabz.fundoo.repositoryimpl.NotesRepositoryImpl;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
+import com.bridgelabz.fundoo.service.INoteService;
+import com.bridgelabz.fundoo.utility.JWTOperations;
+
+@Service
+public class NoteServiceImpl implements INoteService{
+
+	@Autowired
+	private NotesRepositoryImpl notesRepository;
+
+	@Autowired
+	private UserRepositoryImpl userRepository;
+	
+	@Autowired
+	private JWTOperations jwt;	
+	
+	public boolean createNotes(NotesDTO notesDTO,String token) {						
+		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("Not creation denied...", null, TypeOfException.BAD_REQUEST));
+		
+		NotesEntity notesEntity= new NotesEntity();		
+		BeanUtils.copyProperties(notesDTO, notesEntity);		
+		notesEntity.setCreatedDate(LocalDateTime.now());
+		notesEntity.setColor("white");
+		notesEntity.setPinned(false);
+		notesEntity.setArchived(false);
+		notesEntity.setTrashed(false);
+		notesEntity.setRemainderDate(null);
+		user.getNotes().add(notesEntity);
+		notesRepository.save(notesEntity);		
+		return true;			
+	}
+
+	public boolean edit(NotesDTO notesDTO, String token, int noteId) {
+		
+		
+		int userId=jwt.tokenDecoder(token);
+		NotesEntity notesEntity= new NotesEntity();
+		
+		BeanUtils.copyProperties(notesDTO, notesEntity);
+		notesEntity.setUpdatedDate(LocalDateTime.now());
+		if(notesRepository.update(userId,notesEntity,noteId))
+		{
+			return true;
+		}
+		throw new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND);
+	}
+
+	public boolean delete(String token) {
+		
+		int userId=jwt.tokenDecoder(token);
+		if(notesRepository.deleteAllNotes( userId))		
+		{
+			return true;
+		}
+		throw new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND);
+	}
+	
+	public boolean deleteNote(String token, int noteId)
+	{
+		int userId=jwt.tokenDecoder(token);
+		if(notesRepository.deleteSelectedNote(userId, noteId))
+		{
+			return true;
+		}
+		throw new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND);
+	}
+
+	public String archieve(int noteId, String token) {
+		
+		int userId=jwt.tokenDecoder(token);		
+		NotesEntity notesEntity=notesRepository.getNote(userId,noteId);	
+		
+		if(notesEntity.isArchived())
+		{	
+			notesEntity=notesRepository.getNote(userId,noteId);	
+			notesEntity.setArchived(false);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId, notesEntity,noteId);	
+			return "Note removed from archive";
+		}	
+		else if(!notesEntity.isArchived())
+		{
+			notesEntity.setArchived(true);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId, notesEntity,noteId);
+			return "Note added to archive";
+		}	
+		else
+		{
+			throw new NotesCustomException("Request Denied...", null, TypeOfException.FORBIDDEN);
+		}
+	}
+
+	public String pinned(int noteId,String token) {
+		
+		int userId=jwt.tokenDecoder(token);
+		NotesEntity notesEntity=notesRepository.getNote(userId,noteId);		
+		if(notesEntity.isPinned())
+		{
+			notesEntity.setPinned(false);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId, notesEntity,noteId);	
+			return "Note removed from pin";
+		}	
+		else if(!notesEntity.isPinned())
+		{
+			notesEntity.setPinned(true);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId,notesEntity,noteId);
+			return "Note added to pin";
+		}		
+		throw new NotesCustomException("Request Denied...", null, TypeOfException.FORBIDDEN);
+	}
+
+	public String trashed(int noteId,String token) {
+		
+		int userId=jwt.tokenDecoder(token);
+		NotesEntity notesEntity=notesRepository.getNote(userId,noteId);	
+		if(notesEntity.isTrashed())
+		{
+			notesEntity.setTrashed(false);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId, notesEntity, noteId);
+			return "Note removed to trashed";
+		}	
+		else if(!notesEntity.isTrashed())
+		{
+			notesEntity.setTrashed(true);
+			notesEntity.setUpdatedDate(LocalDateTime.now());
+			notesRepository.update(userId,notesEntity,noteId);
+			return "Note added from trashed";
+		}
+		throw new NotesCustomException("Request Denied...", null, TypeOfException.FORBIDDEN);
+	}
+	
+	
+	
+}

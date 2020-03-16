@@ -1,0 +1,27 @@
+package com.bridgelabz.fundoo.response;
+
+
+import lombok.Data;
+
+@Data
+public class UserResponse1 {
+
+	public UserResponse1() {
+			// TODO Auto-generated constructor stub
+	}
+	String message;
+	int statusCode;
+	Object data;
+	public UserResponse1(String message, int statusCode) {
+		super();
+		this.message = message;
+		this.statusCode = statusCode;
+	}
+	public UserResponse1(String message, int statusCode, Object data) {
+		super();
+		this.message = message;
+		this.statusCode = statusCode;
+		this.data = data;
+	}				
+	
+}

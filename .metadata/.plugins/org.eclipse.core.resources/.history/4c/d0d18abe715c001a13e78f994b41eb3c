@@ -1,7 +1,0 @@
-package com.bridgelabz.fundoo.dto;
-
-public class NoteDTO {
-
-	private String title;
-	private String description;
-}

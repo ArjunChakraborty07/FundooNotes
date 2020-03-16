@@ -9,30 +9,31 @@ import org.springframework.stereotype.Service;
 import com.bridgelabz.fundoo.dto.NotesDTO;
 import com.bridgelabz.fundoo.entity.NotesEntity;
 import com.bridgelabz.fundoo.entity.UserEntity;
-import com.bridgelabz.fundoo.repository.NotesRepository;
-import com.bridgelabz.fundoo.repository.UserRepository;
+import com.bridgelabz.fundoo.exception.NotesCustomException;
+import com.bridgelabz.fundoo.exception.NotesCustomException.TypeOfException;
+import com.bridgelabz.fundoo.repositoryimpl.NotesRepositoryImpl;
+import com.bridgelabz.fundoo.repositoryimpl.UserRepositoryImpl;
+import com.bridgelabz.fundoo.service.INoteService;
 import com.bridgelabz.fundoo.utility.JWTOperations;
 
 @Service
-public class NoteServiceImpl {
+public class NoteServiceImpl implements INoteService{
 
 	@Autowired
-	private NotesRepository notesRepository;
+	private NotesRepositoryImpl notesRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepositoryImpl userRepository;
 	
 	@Autowired
 	private JWTOperations jwt;	
 	
-	public void createNotes(NotesDTO notesDTO,String token) {						
+	
+	public boolean createNotes(NotesDTO notesDTO,String token) {						
 		
-		
-		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token));
-		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));		
 		NotesEntity notesEntity= new NotesEntity();		
-		BeanUtils.copyProperties(notesDTO, notesEntity);
-		
+		BeanUtils.copyProperties(notesDTO, notesEntity);		
 		notesEntity.setCreatedDate(LocalDateTime.now());
 		notesEntity.setColor("white");
 		notesEntity.setPinned(false);
@@ -40,74 +41,106 @@ public class NoteServiceImpl {
 		notesEntity.setTrashed(false);
 		notesEntity.setRemainderDate(null);
 		user.getNotes().add(notesEntity);
-		notesRepository.save(notesEntity);
-	
+		userRepository.save(user);
+		return true;			
 	}
 
-	public void edit(NotesDTO notesDTO, String token, int noteId) {
-		
-		int id=jwt.tokenDecoder(token);
-		NotesEntity notesEntity= notesRepository.getNote(noteId,id);	
-		BeanUtils.copyProperties(notesDTO, notesEntity);
-		notesEntity.setUpdatedDate(LocalDateTime.now());
-		notesRepository.update(id,notesEntity);
+	public boolean edit(NotesDTO notesDTO, String token, int noteId) {
+						
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));		
+		NotesEntity note=user.getNotes().stream().filter(n->n.getNoteId()==noteId).findFirst().orElseThrow(()->new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND));
+		BeanUtils.copyProperties(notesDTO, note);
+		note.setUpdatedDate(LocalDateTime.now());									
+		user.getNotes().add(note);
+		userRepository.save(user);
+		return true;
 	}
 
-	public void delete(int noteId,String token) {
-		
-		int id=jwt.tokenDecoder(token);
-		notesRepository.delete(id);		
-		
-	}
-
-	public void archieve(int noteId, String token) {
-		
-		int id=jwt.tokenDecoder(token);
-		NotesEntity notesEntity= notesRepository.getNote(noteId,id);
-		if(notesEntity.isArchived())
-		{
-			notesEntity.setArchived(false);
-			notesRepository.update(id, notesEntity);
-		}	
-		else
-		{
-			notesEntity.setArchived(true);
-			notesRepository.update(id,notesEntity);
-		}
-	}
-
-	public void pinned(int noteId,String token) {
-		
-		int id=jwt.tokenDecoder(token);
-		NotesEntity notesEntity= notesRepository.getNote(noteId,id);
-		if(notesEntity.isPinned())
-		{
-			notesEntity.setPinned(false);
-			notesRepository.update(id, notesEntity);
-		}	
-		else
-		{
-			notesEntity.setPinned(true);
-			notesRepository.update(id,notesEntity);
-		}		
-	}
-
-	public void trashed(int noteId,String token) {
-		
-		int id=jwt.tokenDecoder(token);
-		NotesEntity notesEntity= notesRepository.getNote(noteId,id);
-		if(notesEntity.isTrashed())
-		{
-			notesEntity.setTrashed(false);
-			notesRepository.update(id, notesEntity);
-		}	
-		else
-		{
-			notesEntity.setTrashed(true);
-			notesRepository.update(id,notesEntity);
-		}
+	public boolean delete(String token) {
+			
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));
+		//user.getNotes().remove(jwt.tokenDecoder(token));
+		notesRepository.deleteAllNotes(jwt.tokenDecoder(token));
+		userRepository.save(user);
+		return true;
 	}
 	
+	public boolean deleteNote(String token, int noteId)
+	{
+		int userId=jwt.tokenDecoder(token);
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));
+		user.getNotes().stream().filter(n->n.getNoteId()==noteId).findFirst().orElseThrow(()->new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND));
+		return notesRepository.deleteSelectedNote(userId, noteId);
+			
+	}
 
+	public String archieve(int noteId, String token) {
+					
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));		
+		NotesEntity notes=user.getNotes().stream().filter(n->n.getNoteId()==noteId).findFirst().orElseThrow(()->new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND));
+		notes.setUpdatedDate(LocalDateTime.now());
+		if(notes.isArchived())
+		{
+			notes.setArchived(false);
+			user.getNotes().add(notes);	
+			userRepository.save(user);
+			return "Note removed from archive";
+		}
+		else
+		{
+			notes.setArchived(true);
+			user.getNotes().add(notes);
+			userRepository.save(user);
+			return "Note added to archive";
+		}
+		
+		
+	}
+
+	public String pinned(int noteId,String token) {
+		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));		
+		NotesEntity notes=user.getNotes().stream().filter(n->n.getNoteId()==noteId).findFirst().orElseThrow(()->new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND));
+		notes.setUpdatedDate(LocalDateTime.now());
+		if(notes.isPinned())
+		{
+			notes.setPinned(false);
+			user.getNotes().add(notes);	
+			userRepository.save(user);
+			return "Note removed from pin";
+		}
+		else
+		{
+			notes.setPinned(true);
+			user.getNotes().add(notes);
+			userRepository.save(user);
+			return "Note added to pin";
+		}
+		
+	}
+
+	public String trashed(int noteId,String token) {
+		
+		UserEntity user=userRepository.getUserById(jwt.tokenDecoder(token)).orElseThrow(()->new NotesCustomException("User Not Found...", null, TypeOfException.USER_NOT_FOUND));		
+		NotesEntity notes=user.getNotes().stream().filter(n->n.getNoteId()==noteId).findFirst().orElseThrow(()->new NotesCustomException("Note not found...", null, TypeOfException.NOTE_NOT_FOUND));
+		notes.setUpdatedDate(LocalDateTime.now());
+		if(notes.isArchived())
+		{
+			notes.setTrashed(false);
+			user.getNotes().add(notes);		
+			userRepository.save(user);
+			return "Note removed from trash";
+		}
+		else
+		{
+			notes.setTrashed(true);
+			user.getNotes().add(notes);
+			userRepository.save(user);
+			return "Note added to trash";
+		}
+		
+	}
+	
+	
 	
 }

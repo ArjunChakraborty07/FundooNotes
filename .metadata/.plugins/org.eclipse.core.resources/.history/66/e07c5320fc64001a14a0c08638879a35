@@ -1,0 +1,35 @@
+package com.bridgelabz.fundoo.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.bridgelabz.fundoo.response.ExceptionResponse;
+import com.bridgelabz.fundoo.response.UserResponse;
+
+@ControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(UserCustomException.class)
+	public final ResponseEntity<UserResponse> allException(UserCustomException ex) {
+		
+		UserResponse exp = new UserResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}
+	
+
+	@ExceptionHandler(UserCustomException.class)
+	    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException userException) {
+	        ErrorResponse errorResponse = new ErrorResponse();
+	        errorResponse.setMessage(userException.getMessage());
+	        errorResponse.setStatusCode(userException.getStatusCode());;
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errorResponse.getMessage(), errorResponse.getStatusCode()));
+	   
+	}
+}

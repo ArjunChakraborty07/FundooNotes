@@ -1,0 +1,141 @@
+package com.bridgelabz.fundoo.entity;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+@Entity
+@Table(name = "fundoo_table")
+public class UserEntity {
+
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	private int getId() {
+		return id;
+	}
+
+	private void setId(int id) {
+		this.id = id;
+	}
+
+	private Optional<Boolean> getVerify() {
+		return Optional.of(verify);
+	}
+
+	private void setVerify(boolean verify) {
+		this.verify = verify;
+	}
+
+	private UserEntity(int id, String name, String email, String phone, String password, boolean verify) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.password = password;
+		this.verify= verify;
+	}
+
+	@Column(name = "user_name")
+	private String name;
+	@Column(name = "email_id")
+	private String email;
+	@Column(name = "phone_no")
+	private String phone;
+	private List<NotesEntity> getNotes() {
+		return notes;
+	}
+
+	private void setNotes(List<NotesEntity> notes) {
+		this.notes = notes;
+	}
+
+	@Column(name = "password")
+	private String password;
+	@Column(name = "verification")
+	private boolean verify;	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private List<NotesEntity> notes;
+
+	private UserEntity() {
+
+	}
+
+	private String getName() {
+		return name;
+	}
+
+	private void setName(String name) {
+		this.name = name;
+	}
+
+	private String getEmail() {
+		return email;
+	}
+
+	private void setEmail(String email) {
+		this.email = email;
+	}
+
+	private String getPassword() {
+		return password;
+	}
+	
+	private void setPassword(String password) {
+		this.password = password;
+	}
+
+	private String getPhone() {
+		return phone;
+	}
+
+	private void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private List<LabelEntity> label;
+
+	private List<LabelEntity> getLabel() {
+		return label;
+	}
+
+	private void setLabel(List<LabelEntity> label) {
+		this.label = label;
+	}
+	
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "collaborator_note", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "note_id") })
+	private List<NotesEntity> collabNote;
+
+	private List<NotesEntity> getCollabNote() {
+		return collabNote;
+	}
+
+	private void setCollabNote(List<NotesEntity> collabNote) {
+		this.collabNote = collabNote;
+	}
+}

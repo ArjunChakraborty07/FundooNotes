@@ -1,0 +1,29 @@
+package com.bridgelabz.fundoo.utility;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
+public class RabbitMQMessage {
+
+	public void rabbitMQMessage() {
+	try {
+		ConnectionFactory factory= new ConnectionFactory();	
+		Connection connection= factory.newConnection();
+		Channel channel=connection.createChannel();
+		channel.queueDeclare("Collaboration", false, false, false, null);
+		
+		String message="Collaboration Successful...";
+		channel.basicPublish( "", "Collaboration" , false, null, message.getBytes());
+	} catch (IOException e) {
+		
+		e.printStackTrace();
+	} catch (TimeoutException e) {
+		
+		e.printStackTrace();
+	}
+	}
+}

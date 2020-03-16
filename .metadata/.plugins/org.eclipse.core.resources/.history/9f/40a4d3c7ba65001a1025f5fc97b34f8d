@@ -1,0 +1,50 @@
+package com.bridgelabz.fundoo.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.bridgelabz.fundoo.response.LabelResponse;
+import com.bridgelabz.fundoo.response.NoteResponse;
+import com.bridgelabz.fundoo.response.UserResponse;
+
+@ControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(UserCustomException.class)
+	public final ResponseEntity<UserResponse> UserException(UserCustomException ex) {
+		
+		UserResponse exp = new UserResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		System.out.println(ex);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}	
+	
+	@ExceptionHandler(NotesCustomException.class)
+	public final ResponseEntity<NoteResponse> NoteException(NotesCustomException ex) {
+		
+		NoteResponse exp = new NoteResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NoteResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}	
+
+	@ExceptionHandler(LabelCustomException.class)
+	public final ResponseEntity<LabelResponse> LabelException(LabelCustomException ex) {
+		
+		LabelResponse exp = new LabelResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new LabelResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}
+
+}

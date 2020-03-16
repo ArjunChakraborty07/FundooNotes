@@ -2,20 +2,60 @@ package com.bridgelabz.fundoo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.bridgelabz.fundoo.response.Response;
+import com.bridgelabz.fundoo.response.CollabResponse;
+import com.bridgelabz.fundoo.response.LabelResponse;
+import com.bridgelabz.fundoo.response.NoteResponse;
+import com.bridgelabz.fundoo.response.UserResponse;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	@ExceptionHandler(UserServiceExceptionHandler.class)
-	public ResponseEntity<Response> handleAllUserException(UserServiceExceptionHandler exception) {
+
+	@ExceptionHandler(UserCustomException.class)
+	public final ResponseEntity<UserResponse> userException(UserCustomException ex) {
 		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(exception.getStatus(), exception.getMessage()));
+		UserResponse exp = new UserResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}	
 	
+	@ExceptionHandler(NotesCustomException.class)
+	public final ResponseEntity<NoteResponse> noteException(NotesCustomException ex) {
+		
+		NoteResponse exp = new NoteResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new NoteResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}	
+
+	@ExceptionHandler(LabelCustomException.class)
+	public final ResponseEntity<LabelResponse> labelException(LabelCustomException ex) {
+		
+		LabelResponse exp = new LabelResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new LabelResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
+	}
+	
+	@ExceptionHandler(CollabCustomException.class)
+	public final ResponseEntity<CollabResponse>collabException(CollabCustomException ex) {
+		
+		CollabResponse exp = new CollabResponse();
+		exp.setMessage(ex.getMessage());
+		exp.setToken(ex.getToken());
+		exp.setType(ex.getType());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CollabResponse(exp.getToken(),exp.getMessage(),exp.getType()));		
+		
 	}
 
 }

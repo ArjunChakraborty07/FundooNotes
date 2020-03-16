@@ -1,0 +1,6 @@
+
+`
+java:S2201 "/The return value of "orElseThrow" must be used.(§ÎÃüÿÿÿÿ8ŒÜë½.HRMAJORZBUG
+^
+java:S11680"+Return an empty collection instead of null.(¥¹ï8ŒÜë½.HŒRMAJORZ
+CODE_SMELL

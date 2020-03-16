@@ -1,0 +1,13 @@
+package com.bridgelabz.fundoo.configuration;
+
+import org.apache.http.HttpHost;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+
+
+public class ElasticSearchConfig {
+
+	
+}

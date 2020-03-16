@@ -1,0 +1,63 @@
+package com.bridgelabz.fundoo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bridgelabz.fundoo.dto.LabelDTO;
+import com.bridgelabz.fundoo.response.UserResponse;
+import com.bridgelabz.fundoo.serviceimpl.LabelServiceImpl;
+
+@RestController
+@RequestMapping("/label")
+public class LabelController {
+
+	@Autowired
+	private LabelServiceImpl labelServiceImpl;
+	
+	@PostMapping("/create/{token}")
+	public ResponseEntity<UserResponse> createLabel(@RequestBody LabelDTO labelDTO, @PathVariable("token") String token)
+	{
+		labelServiceImpl.createLabel(labelDTO, token);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(token, "Label Creation Successful...",null));
+	}
+	@PutMapping("/add/{token}")
+	public ResponseEntity<UserResponse> addLabeltoNote(@RequestParam("labelId") int labelId,@RequestParam("noteId") int noteId,@PathVariable String token)
+	{
+		labelServiceImpl.addLabeltoNote(labelId, noteId, token);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UserResponse(token, "Label Added to Note Successfully...",null));
+
+	}
+	public ResponseEntity<UserResponse> createLabelToNote(@RequestBody LabelDTO labelDTO,@RequestParam("noteId") int noteId,@PathVariable("token") String token)
+	{
+		labelServiceImpl.createLabelToNote(noteId, token, labelDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(token, "Label Creation Successful...",null));
+
+	}
+	public ResponseEntity<UserResponse> removeLabelFromNote(@RequestParam("labelName")String labelName,@RequestParam("noteId") int noteId,@PathVariable("token") String token)
+	{
+		labelServiceImpl.removeLabelFromNote(labelName, noteId, token);
+		return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(token, "Label Removed Successfully...",null));
+
+	}
+	public ResponseEntity<UserResponse> update(@RequestBody LabelDTO labelDTO,@RequestParam("labelId") int labelId,@PathVariable("token") String token)
+	{
+		labelServiceImpl.updateLabel(labelDTO, labelId, token);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new UserResponse(token, "Label Updated Successfully...",null));
+
+	}
+	public ResponseEntity<UserResponse> delete(@RequestParam("labelName")String labelName,@PathVariable("token") String token)
+	{
+		labelServiceImpl.deleteLabel(labelName, token);
+		return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(token, "Label Deleted Successfully...",null));
+
+	}
+	
+}

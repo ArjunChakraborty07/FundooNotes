@@ -7,6 +7,12 @@
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="aws.access.key.id" value="AKIATE3H4LKXX6TJG2OL"/>
+<mapEntry key="aws.access.key.secret" value="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"/>
+<mapEntry key="aws.region" value="ap-south-1"/>
+<mapEntry key="aws.s3.audio.bucket" value="profilepicfundoo"/>
+<mapEntry key="email" value="chakraborty.arjun6@gmail.com"/>
+<mapEntry key="password" value="arjunshanu"/>
 <mapEntry key="secret" value="7605845560"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenClassPathProvider"/>

@@ -1,4 +1,11 @@
 
-d
-java:S1172",Remove this unused method parameter "token".(Œõ¨æøÿÿÿÿ8ÕØ…Š.H¤	RMAJORZ
+`
+java:S2201H"/The return value of "orElseThrow" must be used.(§”ˆ¨ýÿÿÿÿ8éÉæÌŒ.H¶RMAJORZBUG
+
+java:S1192""RDefine a constant instead of duplicating this literal "User Not Found..." 7 times.(ÝÍ¿Êûÿÿÿÿ8ÉôÄÍŒ.H´RCRITICALZ
+CODE_SMELL
+n	java:S125>"<This block of commented-out lines of code should be removed.(ÿ¤Áæ8« ¡.H·RMAJORZ
+CODE_SMELL
+ˆ
+java:S11923"RDefine a constant instead of duplicating this literal "Note not found..." 5 times.(ÃìÇ»8Áî°ñŒ.HµRCRITICALZ
 CODE_SMELL

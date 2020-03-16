@@ -1,0 +1,9 @@
+
+p	java:S1067"9Replace this use of System.out or System.err by a logger.(ÙÑ ‹øÿÿÿÿ8öà¤Ÿ.H÷RMAJORZ
+CODE_SMELL
+[
+java:S2201A"/The return value of "orElseThrow" must be used.(Ğ‹…Æ8ûŒ§ÌŒ.HâRMAJORZBUG
+h
+java:S3655X"7Call "Optional#isPresent()" before accessing the value.(ÊªéÓıÿÿÿÿ8Ö©ªñŒ.HàRMAJORZBUG
+c
+java:S3655/"7Call "Optional#isPresent()" before accessing the value.(ğˆéæ8òÖë”.HáRMAJORZBUG
